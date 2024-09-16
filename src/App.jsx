@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
-import { FaCheck, FaPlus } from "react-icons/fa";
+import React, { useState, useRef, useEffect } from "react";
+import { FaCheck, FaPlus, FaPlay } from "react-icons/fa";
+import { fetchInstagramPosts } from "./instagramApi";
 import {
   AppContainer,
   Header,
@@ -21,6 +22,8 @@ import {
   SectionImage,
   InstagramGrid,
   InstagramPost,
+  InstagramMedia,
+  VideoOverlay,
   Footer,
   TeamSection,
   TeamGrid,
@@ -29,8 +32,13 @@ import {
   MemberName,
   MemberRole,
 } from "./App.styles";
-import Logo from "./assets/logounique.png";
-
+import Logo from "./assets/logounique.jpg";
+import Fotosalao from "./assets/fotosalao.jpg";
+import Fotosalao2 from "./assets/fotosalao2.jpg";
+import Joana from "./assets/joanaSalao.jpg";
+import Janyce from "./assets/mamaeSalao.jpg";
+import Carol from "./assets/carolSalao.jpg";
+import Vanessa from "./assets/vanessaSalao.jpg";
 function App() {
   const [selectedServices, setSelectedServices] = useState([]);
   const whatsappNumber = "351938556873"; // Substitua pelo número real
@@ -38,26 +46,22 @@ function App() {
   const teamMembers = [
     {
       name: "Janyce Ibiapina",
-      image:
-        "https://lh5.googleusercontent.com/p/AF1QipN1dh9UY_KJHCueT9MNkM6JcEMmg9DC46-KYRVh=w500-h500-k-no",
+      image: Janyce,
       role: "Dona do Salão, Esteticista e especialista em tratamentos faciais",
     },
     {
       name: "Joana Silva",
-      image:
-        "https://lh5.googleusercontent.com/p/AF1QipN1dh9UY_KJHCueT9MNkM6JcEMmg9DC46-KYRVh=w500-h500-k-no",
+      image: Joana,
       role: "Manicure especialista em unhas de pé e mão",
     },
     {
       name: "Carol Duarte",
-      image:
-        "https://lh5.googleusercontent.com/p/AF1QipN1dh9UY_KJHCueT9MNkM6JcEMmg9DC46-KYRVh=w500-h500-k-no",
+      image: Carol,
       role: "Maquiadora profissional",
     },
     {
-      name: "Jefferson Leite",
-      image:
-        "https://lh5.googleusercontent.com/p/AF1QipN1dh9UY_KJHCueT9MNkM6JcEMmg9DC46-KYRVh=w500-h500-k-no",
+      name: "Vanessa Silva",
+      image: Vanessa,
       role: "Massagista terapêutico",
     },
 
@@ -117,6 +121,16 @@ function App() {
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
+  const [instagramPosts, setInstagramPosts] = useState([]);
+
+  useEffect(() => {
+    const loadInstagramPosts = async () => {
+      const posts = await fetchInstagramPosts();
+      setInstagramPosts(posts);
+    };
+    loadInstagramPosts();
+  }, []);
+
   return (
     <AppContainer>
       <Header>
@@ -132,10 +146,7 @@ function App() {
       </Header>
 
       <HeroSection>
-        <HeroImage
-          src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg"
-          alt="Pessoa hidratando o cabelo"
-        />
+        <HeroImage src={Fotosalao2} alt="Pessoa hidratando o cabelo" />
       </HeroSection>
 
       <MainContent>
@@ -166,22 +177,25 @@ function App() {
         </Section>
 
         <Section ref={(el) => (sections.current["producoes"] = el)}>
-          <SectionTitle>Produções</SectionTitle>
+          <SectionTitle>Nossas Produções</SectionTitle>
           <InstagramGrid>
-            {[...Array(8)].map((_, index) => (
-              <InstagramPost key={index}>
-                <a
-                  href={`https://www.instagram.com/reel/C8pm0Gut-NI/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`https://www.instagram.com/reel/C8pm0Gut-NI/-${
-                      index + 1
-                    }.jpg`}
-                    alt={`Produção ${index + 1}`}
-                  />
-                </a>
+            {instagramPosts.map((post) => (
+              <InstagramPost
+                key={post.id}
+                href={post.permalink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {post.media_type === "VIDEO" ? (
+                  <>
+                    <InstagramMedia as="video" src={post.media_url} />
+                    <VideoOverlay>
+                      <FaPlay />
+                    </VideoOverlay>
+                  </>
+                ) : (
+                  <InstagramMedia src={post.media_url} alt={post.caption} />
+                )}
               </InstagramPost>
             ))}
           </InstagramGrid>
