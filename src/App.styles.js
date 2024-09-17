@@ -28,6 +28,9 @@ export const Header = styled.header`
   display: flex;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.8);
+  //background-color: var(--background);
+  //color: var(--text);
+
   padding: 1rem;
   z-index: 1000;
 
@@ -49,8 +52,10 @@ export const NavItem = styled.button`
   cursor: pointer;
   font-size: 1rem;
   margin: 0 1rem;
+  color: rgba(0, 0, 0);
   &:hover {
     text-decoration: underline;
+    color: var(--accent);
   }
 
   @media (max-width: 768px) {
@@ -101,7 +106,7 @@ export const MainContent = styled.main`
 
 export const SectionTitle = styled.h2`
   font-size: 3rem;
-  color: #ff69b4;
+  color: var(--primary);
   margin-bottom: 2rem;
   position: relative;
   padding-bottom: 0.5rem;
@@ -122,6 +127,7 @@ export const SectionContent = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
+  color: var(--text);
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -333,6 +339,7 @@ export const ServiceItem = styled.li`
   cursor: pointer;
   transition: background-color 0.3s ease;
   background-color: ${(props) => (props.selected ? "#ffe4e1" : "transparent")};
+  color: rgba(0, 0, 0);
 
   &:hover {
     background-color: #ffe4e1;
@@ -405,6 +412,7 @@ export const MemberName = styled.h3`
   font-size: 1.2rem;
   margin: 1rem 0 0.5rem;
   text-align: center;
+  color: rgba(0, 0, 0);
 `;
 
 export const MemberRole = styled.p`
@@ -444,7 +452,7 @@ export const ContactItem = styled.p`
   align-items: center;
   margin: 0.5rem 0;
   font-size: 1.1rem;
-
+  color: rgba(0, 0, 0);
   svg {
     margin-right: 0.5rem;
     color: #ff69b4;
@@ -505,7 +513,7 @@ export const MobileMenuButton = styled.button`
   border: none;
   font-size: 1.8rem;
   cursor: pointer;
-  color: #ff69b4;
+  color: var(--primary);
   padding: 0.5rem;
 
   @media (max-width: 768px) {
@@ -515,6 +523,7 @@ export const MobileMenuButton = styled.button`
 
 export const MobileMenu = styled.div`
   display: none;
+  background-color: var(--background);
 
   @media (max-width: 768px) {
     display: flex;

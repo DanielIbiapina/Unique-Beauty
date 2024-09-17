@@ -62,6 +62,8 @@ import Joana from "./assets/joanaSalao.jpg";
 import Janyce from "./assets/mamaeSalao.jpg";
 import Carol from "./assets/carolSalao.jpg";
 import Vanessa from "./assets/vanessaSalao.jpg";
+import GlobalStyles from "./GlobalStyles";
+
 function App() {
   const [selectedServices, setSelectedServices] = useState([]);
   const whatsappNumber = "351938556873"; // Substitua pelo número real
@@ -181,6 +183,7 @@ function App() {
 
   return (
     <AppContainer>
+      <GlobalStyles />
       <Header>
         <MobileMenuButton onClick={toggleMobileMenu}>
           {mobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -371,13 +374,14 @@ function App() {
             <ContactInfoMap>
               <ContactInfo>
                 <ContactItem>
-                  <FaPhone /> (11) 1234-5678
+                  <FaPhone /> +351 938 556 873
                 </ContactItem>
                 <ContactItem>
                   <FaEnvelope /> contato@seusite.com
                 </ContactItem>
                 <ContactItem>
-                  <FaMapMarkerAlt /> Rua do Salão, 123 - São Paulo, SP
+                  <FaMapMarkerAlt /> Rua Mouzinho de Albuquerque, 439 -
+                  Matosinhos
                 </ContactItem>
               </ContactInfo>
               <MapContainer>
