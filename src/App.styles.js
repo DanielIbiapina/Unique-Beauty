@@ -202,7 +202,7 @@ export const Footer = styled.footer`
 export const HeroSection = styled.section`
   position: relative;
   width: 100%;
-  height: 70vh; // Altura para desktop
+  height: 100vh; // Altura para desktop
 
   @media (max-width: 768px) {
     height: 50vh; // Altura reduzida para dispositivos móveis
