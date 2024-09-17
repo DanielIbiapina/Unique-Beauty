@@ -146,6 +146,7 @@ export const SectionImage = styled.img`
 
   @media (max-width: 768px) {
     max-width: 100%;
+    width: 100%;
   }
 `;
 
@@ -234,6 +235,12 @@ export const InstagramGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
 `;
 
 export const InstagramPost = styled.a`
