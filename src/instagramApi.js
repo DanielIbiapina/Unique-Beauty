@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const INSTAGRAM_TOKEN =
-  "IGQWRNYWxMdnJqT25xNHd5S09jb2E2NGk4NGcxemVjdDI5MUtTcVJHSktiZAlM2SXBjZAHN3NWt5aDBfZAkpDbVB1YUcxYi1iT0lHM1pvc1A5eldyUF92MVE0Tk5NXzMzcjA0SHZARaHlFWUZApMXVrTWQtZA1dTNFBzY0EZD";
+const INSTAGRAM_TOKEN = import.meta.env.VITE_INSTAGRAM_TOKEN;
 const INSTAGRAM_API_URL = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token=${INSTAGRAM_TOKEN}`;
 
 export const fetchInstagramPosts = async () => {
