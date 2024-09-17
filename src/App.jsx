@@ -6,6 +6,8 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { fetchInstagramPosts } from "./instagramApi";
 import {
@@ -25,6 +27,7 @@ import {
   ScheduleButton,
   HeroSection,
   HeroImage,
+  HeroBackgroundDiv,
   SectionContent,
   SectionImage,
   InstagramGrid,
@@ -49,6 +52,8 @@ import {
   FormInput,
   FormTextArea,
   SubmitButton,
+  MobileMenuButton,
+  MobileMenu,
 } from "./App.styles";
 import Logo from "./assets/logounique.jpg";
 import Fotosalao from "./assets/fotosalao.jpg";
@@ -168,22 +173,98 @@ function App() {
     setFormData({ name: "", email: "", message: "" });
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
     <AppContainer>
       <Header>
-        <NavItem onClick={() => scrollToSection("sobre")}>
+        <MobileMenuButton onClick={toggleMobileMenu}>
+          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+        </MobileMenuButton>
+        <MobileMenu open={mobileMenuOpen}>
+          <NavItem
+            onClick={() => {
+              scrollToSection("sobre");
+              toggleMobileMenu();
+            }}
+          >
+            Sobre o Salão
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              scrollToSection("producoes");
+              toggleMobileMenu();
+            }}
+          >
+            Produções
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              scrollToSection("servicos");
+              toggleMobileMenu();
+            }}
+          >
+            Serviços
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              scrollToSection("equipe");
+              toggleMobileMenu();
+            }}
+          >
+            Equipe
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              scrollToSection("contato");
+              toggleMobileMenu();
+            }}
+          >
+            Contato
+          </NavItem>
+        </MobileMenu>
+        <NavItem
+          className="desktop-only"
+          onClick={() => scrollToSection("sobre")}
+        >
           Sobre o Salão
         </NavItem>
-        <NavItem onClick={() => scrollToSection("producoes")}>
+        <NavItem
+          className="desktop-only"
+          onClick={() => scrollToSection("producoes")}
+        >
           Produções
         </NavItem>
-        <NavItem onClick={() => scrollToSection("servicos")}>Serviços</NavItem>
-        <NavItem onClick={() => scrollToSection("equipe")}>Equipe</NavItem>
-        <NavItem onClick={() => scrollToSection("contato")}>Contato</NavItem>
+        <NavItem
+          className="desktop-only"
+          onClick={() => scrollToSection("servicos")}
+        >
+          Serviços
+        </NavItem>
+        <NavItem
+          className="desktop-only"
+          onClick={() => scrollToSection("equipe")}
+        >
+          Equipe
+        </NavItem>
+        <NavItem
+          className="desktop-only"
+          onClick={() => scrollToSection("contato")}
+        >
+          Contato
+        </NavItem>
       </Header>
 
       <HeroSection>
+        {/* Opção 1: Usar a tag img com object-fit */}
         <HeroImage src={Fotosalao2} alt="Pessoa hidratando o cabelo" />
+
+        {/* Opção 2: Usar uma div com imagem de fundo */}
+        {/* <HeroBackgroundDiv imageUrl={Fotosalao2} /> */}
       </HeroSection>
 
       <MainContent>

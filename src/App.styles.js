@@ -30,6 +30,17 @@ export const Header = styled.header`
   background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
   z-index: 1000;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  }
+
+  .desktop-only {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
 `;
 
 export const NavItem = styled.button`
@@ -40,6 +51,23 @@ export const NavItem = styled.button`
   margin: 0 1rem;
   &:hover {
     text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    color: #ff69b4;
+    font-size: 1.2rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #ff69b4;
+    width: 100%;
+    text-align: left;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #fff0f5;
+    }
   }
 `;
 
@@ -170,16 +198,30 @@ export const Footer = styled.footer`
   }
 `;
 
-export const HeroSection = styled.div`
-  height: 100vh;
-  width: 100%;
+export const HeroSection = styled.section`
   position: relative;
+  width: 100%;
+  height: 70vh; // Altura para desktop
+
+  @media (max-width: 768px) {
+    height: 50vh; // Altura reduzida para dispositivos móveis
+  }
 `;
 
 export const HeroImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+`;
+
+export const HeroBackgroundDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 export const Section = styled.section`
@@ -447,5 +489,38 @@ export const SubmitButton = styled.button`
 
   &:hover {
     background-color: #ff1493;
+  }
+`;
+
+export const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #ff69b4;
+  padding: 0.5rem;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+export const MobileMenu = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: ${({ open }) => (open ? "300px" : "0")};
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
   }
 `;
