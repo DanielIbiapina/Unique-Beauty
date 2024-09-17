@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaCheck, FaPlus, FaPlay } from "react-icons/fa";
+import {
+  FaCheck,
+  FaPlus,
+  FaPlay,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { fetchInstagramPosts } from "./instagramApi";
 import {
   AppContainer,
@@ -31,6 +38,17 @@ import {
   MemberImage,
   MemberName,
   MemberRole,
+  ContactSection,
+  ContactContainer,
+  ContactInfoMap,
+  ContactInfo,
+  ContactItem,
+  MapContainer,
+  ContactFormContainer,
+  ContactForm,
+  FormInput,
+  FormTextArea,
+  SubmitButton,
 } from "./App.styles";
 import Logo from "./assets/logounique.jpg";
 import Fotosalao from "./assets/fotosalao.jpg";
@@ -130,6 +148,25 @@ function App() {
     };
     loadInstagramPosts();
   }, []);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você pode implementar a lógica para enviar o formulário
+    console.log("Formulário enviado:", formData);
+    // Limpar o formulário após o envio
+    setFormData({ name: "", email: "", message: "" });
+  };
 
   return (
     <AppContainer>
@@ -247,10 +284,62 @@ function App() {
           </TeamGrid>
         </TeamSection>
 
-        <Section ref={(el) => (sections.current["contato"] = el)}>
-          <SectionTitle>Contato</SectionTitle>
-          {/* Conteúdo da seção Contato */}
-        </Section>
+        <ContactSection ref={(el) => (sections.current["contato"] = el)}>
+          <SectionTitle>Entre em Contato</SectionTitle>
+          <ContactContainer>
+            <ContactInfoMap>
+              <ContactInfo>
+                <ContactItem>
+                  <FaPhone /> (11) 1234-5678
+                </ContactItem>
+                <ContactItem>
+                  <FaEnvelope /> contato@seusite.com
+                </ContactItem>
+                <ContactItem>
+                  <FaMapMarkerAlt /> Rua do Salão, 123 - São Paulo, SP
+                </ContactItem>
+              </ContactInfo>
+              <MapContainer>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3002.998318818821!2d-8.688835024132489!3d41.17820387132718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd246ff20b535c9b%3A0x5158139343a06331!2sUNIQUE%20BEAUTY%20by%20Janyce%20Ibiapina!5e0!3m2!1spt-BR!2sbr!4v1726542780063!5m2!1spt-BR!2sbr"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                ></iframe>
+              </MapContainer>
+            </ContactInfoMap>
+            <ContactFormContainer>
+              <ContactForm onSubmit={handleSubmit}>
+                <FormInput
+                  type="text"
+                  name="name"
+                  placeholder="Seu Nome"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+                <FormInput
+                  type="email"
+                  name="email"
+                  placeholder="Seu E-mail"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+                <FormTextArea
+                  name="message"
+                  placeholder="Sua Mensagem"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                ></FormTextArea>
+                <SubmitButton type="submit">Enviar Mensagem</SubmitButton>
+              </ContactForm>
+            </ContactFormContainer>
+          </ContactContainer>
+        </ContactSection>
       </MainContent>
 
       <Footer>

@@ -364,3 +364,88 @@ export const MemberRole = styled.p`
   text-align: center;
   padding: 0 1rem 1rem;
 `;
+
+export const ContactSection = styled(Section)`
+  background-color: #f9f9f9;
+`;
+
+export const ContactContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+`;
+
+export const ContactInfoMap = styled.div`
+  flex: 1;
+`;
+
+export const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+`;
+
+export const ContactItem = styled.p`
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+
+  svg {
+    margin-right: 0.5rem;
+    color: #ff69b4;
+  }
+`;
+
+export const MapContainer = styled.div`
+  border-radius: 8px;
+  overflow: hidden;
+  height: 300px;
+`;
+
+export const ContactFormContainer = styled.div`
+  flex: 1;
+`;
+
+export const ContactForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FormInput = styled.input`
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const FormTextArea = styled.textarea`
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 150px;
+`;
+
+export const SubmitButton = styled.button`
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+
+  &:hover {
+    background-color: #ff1493;
+  }
+`;
