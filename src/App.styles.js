@@ -517,7 +517,7 @@ export const MobileMenu = styled.div`
     left: 0;
     right: 0;
     background-color: rgba(255, 255, 255, 0.95);
-    padding: 1rem;
+    //padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-height: ${({ open }) => (open ? "300px" : "0")};
     overflow: hidden;
