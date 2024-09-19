@@ -17,14 +17,6 @@ import {
   MainContent,
   Section,
   SectionTitle,
-  ServiceCategories,
-  ServiceCategory,
-  CategoryImage,
-  CategoryTitle,
-  ServiceList,
-  ServiceItem,
-  ServiceIcon,
-  ScheduleButton,
   HeroSection,
   HeroImage,
   HeroBackgroundDiv,
@@ -63,6 +55,7 @@ import Janyce from "./assets/mamaeSalao.jpg";
 import Carol from "./assets/carolSalao.jpg";
 import Vanessa from "./assets/vanessaSalao.jpg";
 import GlobalStyles from "./GlobalStyles";
+import ServicesSection from "./components/servicesSection";
 
 function App() {
   const [selectedServices, setSelectedServices] = useState([]);
@@ -93,57 +86,8 @@ function App() {
     // Adicione mais membros da equipe conforme necessário
   ];
 
-  const serviceCategories = [
-    {
-      name: "Cabelo",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Corte", "Tratamento", "Coloração", "Escova"],
-    },
-    {
-      name: "Unhas",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Alongamento", "Esmaltação em gel", "Esmaltação comum"],
-    },
-    {
-      name: "Massagens",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Massagem corporal", "SPA dos pés"],
-    },
-    {
-      name: "Outros",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Maquiagem profissional", "Depilação com cera e pinça"],
-    },
-  ];
-
   const scrollToSection = (sectionName) => {
     sections.current[sectionName]?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const toggleService = (service) => {
-    setSelectedServices((prev) =>
-      prev.includes(service)
-        ? prev.filter((s) => s !== service)
-        : [...prev, service]
-    );
-  };
-
-  const handleSchedule = () => {
-    if (selectedServices.length === 0) {
-      alert("Por favor, selecione pelo menos um serviço.");
-      return;
-    }
-
-    const message = encodeURIComponent(
-      `Olá, Janyce! Gostaria de agendar os seguintes serviços:\n-${selectedServices.join(
-        "\n-"
-      )}`
-    );
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
   const [instagramPosts, setInstagramPosts] = useState([]);
@@ -297,7 +241,7 @@ function App() {
           </SectionContent>
         </Section>
 
-        <Section ref={(el) => (sections.current["producoes"] = el)}>
+        {/*<Section ref={(el) => (sections.current["producoes"] = el)}>
           <SectionTitle>Nossas Produções</SectionTitle>
           <InstagramGrid>
             {instagramPosts.map((post) => (
@@ -320,40 +264,9 @@ function App() {
               </InstagramPost>
             ))}
           </InstagramGrid>
-        </Section>
+        </Section>*/}
 
-        <Section ref={(el) => (sections.current["servicos"] = el)}>
-          <SectionTitle>Nossos Serviços</SectionTitle>
-          <ServiceCategories>
-            {serviceCategories.map((category) => (
-              <ServiceCategory key={category.name}>
-                <CategoryImage src={category.image} alt={category.name} />
-                <CategoryTitle>{category.name}</CategoryTitle>
-                <ServiceList>
-                  {category.services.map((service) => (
-                    <ServiceItem
-                      key={service}
-                      onClick={() => toggleService(service)}
-                      selected={selectedServices.includes(service)}
-                    >
-                      {service}
-                      <ServiceIcon>
-                        {selectedServices.includes(service) ? (
-                          <FaCheck />
-                        ) : (
-                          <FaPlus />
-                        )}
-                      </ServiceIcon>
-                    </ServiceItem>
-                  ))}
-                </ServiceList>
-              </ServiceCategory>
-            ))}
-          </ServiceCategories>
-          <ScheduleButton onClick={handleSchedule}>
-            Agendar Serviços Selecionados
-          </ScheduleButton>
-        </Section>
+        <ServicesSection ref={(el) => (sections.current["servicos"] = el)} />
 
         <TeamSection ref={(el) => (sections.current["equipe"] = el)}>
           <SectionTitle>Nossa Equipe</SectionTitle>
