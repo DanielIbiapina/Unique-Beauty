@@ -219,3 +219,32 @@ export const DateItem = styled.li`
     background-color: #f0f0f0;
   }
 `;
+
+export const DetailedServiceSelectionPage = styled(ProfessionalSelectionPage)`
+  // Herda os estilos de ProfessionalSelectionPage
+`;
+
+export const DetailedServiceList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+export const DetailedServiceItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: ${(props) => (props.selected ? "#e0e0e0" : "white")};
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const ServicePrice = styled.span`
+  font-weight: bold;
+`;

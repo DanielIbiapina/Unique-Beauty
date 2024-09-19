@@ -207,11 +207,7 @@ function App() {
       </Header>
 
       <HeroSection>
-        {/* Opção 1: Usar a tag img com object-fit */}
         <HeroImage src={Fotosalao2} alt="Pessoa hidratando o cabelo" />
-
-        {/* Opção 2: Usar uma div com imagem de fundo */}
-        {/* <HeroBackgroundDiv imageUrl={Fotosalao2} /> */}
       </HeroSection>
 
       <MainContent>

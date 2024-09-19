@@ -9,6 +9,10 @@ import {
   ServiceItem,
   ServiceIcon,
   ScheduleButton,
+  DetailedServiceSelectionPage,
+  DetailedServiceList,
+  DetailedServiceItem,
+  ServicePrice,
   ProfessionalSelectionPage,
   ProfessionalList,
   ProfessionalItem,
@@ -26,6 +30,8 @@ import { Section, SectionTitle } from "../../App.styles";
 
 const ServicesSection = forwardRef((props, ref) => {
   const [selectedServices, setSelectedServices] = useState([]);
+  const [showDetailedServiceSelection, setShowDetailedServiceSelection] =
+    useState(false);
   const [showProfessionalSelection, setShowProfessionalSelection] =
     useState(false);
   const [showDateTimeSelection, setShowDateTimeSelection] = useState(false);
@@ -47,7 +53,7 @@ const ServicesSection = forwardRef((props, ref) => {
       name: "Unhas",
       image:
         "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Alongamento", "Esmaltação em gel", "Esmaltação comum"],
+      services: ["Alongamento Gel", "Com Francesa", "Verniz", "Manutenção"],
     },
     {
       name: "Massagens",
@@ -61,6 +67,22 @@ const ServicesSection = forwardRef((props, ref) => {
         "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
       services: ["Maquiagem profissional", "Depilação com cera e pinça"],
     },
+  ];
+
+  const allServices = [
+    { id: 1, name: "Corte Feminino", price: 50 },
+    { id: 2, name: "Corte Masculino", price: 30 },
+    { id: 3, name: "Coloração", price: 80 },
+    { id: 4, name: "Escova", price: 40 },
+    { id: 5, name: "Tratamento Capilar", price: 70 },
+    { id: 6, name: "Alongamento de Unhas", price: 60 },
+    { id: 7, name: "Manicure", price: 30 },
+    { id: 8, name: "Pedicure", price: 40 },
+    { id: 9, name: "Massagem Corporal", price: 100 },
+    { id: 10, name: "SPA dos Pés", price: 80 },
+    { id: 11, name: "Maquiagem Profissional", price: 50 },
+    { id: 12, name: "Depilação com Cera", price: 30 },
+    { id: 13, name: "Depilação com Pinça", price: 20 },
   ];
 
   const professionals = [
@@ -101,17 +123,30 @@ const ServicesSection = forwardRef((props, ref) => {
   };
 
   const handleSchedule = () => {
+    setShowDetailedServiceSelection(true);
+  };
+
+  const handleDetailedServiceSelection = (serviceId) => {
+    setSelectedServices((prev) =>
+      prev.includes(serviceId)
+        ? prev.filter((id) => id !== serviceId)
+        : [...prev, serviceId]
+    );
+  };
+
+  const handleConfirmDetailedSelection = () => {
     if (selectedServices.length === 0) {
       alert("Por favor, selecione pelo menos um serviço.");
       return;
     }
+    setShowDetailedServiceSelection(false);
     setShowProfessionalSelection(true);
   };
 
-  const handleSelectProfessional = (service, professionalId) => {
+  const handleSelectProfessional = (serviceId, professionalId) => {
     setSelectedProfessionals((prev) => ({
       ...prev,
-      [service]: professionalId === "sem-preferencia" ? null : professionalId,
+      [serviceId]: professionalId === "sem-preferencia" ? null : professionalId,
     }));
   };
 
@@ -131,13 +166,16 @@ const ServicesSection = forwardRef((props, ref) => {
 
   const handleFinalConfirmation = () => {
     const selection = Object.entries(selectedProfessionals).map(
-      ([service, professionalId]) => ({
-        service,
-        professional:
-          professionalId === null
-            ? "Sem Preferência"
-            : professionals.find((p) => p.id === professionalId).name,
-      })
+      ([serviceId, professionalId]) => {
+        const service = allServices.find((s) => s.id === parseInt(serviceId));
+        return {
+          service: service.name,
+          professional:
+            professionalId === null
+              ? "Sem Preferência"
+              : professionals.find((p) => p.id === professionalId).name,
+        };
+      }
     );
 
     console.log("Agendamento final:", {
@@ -155,7 +193,10 @@ const ServicesSection = forwardRef((props, ref) => {
 
   return (
     <Section ref={ref}>
-      {!showProfessionalSelection && !showDateTimeSelection && !showSummary ? (
+      {!showDetailedServiceSelection &&
+      !showProfessionalSelection &&
+      !showDateTimeSelection &&
+      !showSummary ? (
         <>
           <SectionTitle>Nossos Serviços</SectionTitle>
           <ServiceCategories>
@@ -165,63 +206,82 @@ const ServicesSection = forwardRef((props, ref) => {
                 <CategoryTitle>{category.name}</CategoryTitle>
                 <ServiceList>
                   {category.services.map((service) => (
-                    <ServiceItem
-                      key={service}
-                      onClick={() => toggleService(service)}
-                      selected={selectedServices.includes(service)}
-                    >
-                      {service}
-                      <ServiceIcon>
-                        {selectedServices.includes(service) ? (
-                          <FaCheck />
-                        ) : (
-                          <FaPlus />
-                        )}
-                      </ServiceIcon>
-                    </ServiceItem>
+                    <ServiceItem key={service}>{service}</ServiceItem>
                   ))}
                 </ServiceList>
               </ServiceCategory>
             ))}
           </ServiceCategories>
           <ScheduleButton onClick={handleSchedule}>
-            Agendar Serviços Selecionados
+            Ver Todos os Serviços e Agendar
           </ScheduleButton>
         </>
+      ) : showDetailedServiceSelection ? (
+        <DetailedServiceSelectionPage>
+          <BackButton onClick={() => setShowDetailedServiceSelection(false)}>
+            <FaArrowLeft /> Voltar
+          </BackButton>
+          <SectionTitle>Selecione os Serviços</SectionTitle>
+          <DetailedServiceList>
+            {allServices.map((service) => (
+              <DetailedServiceItem
+                key={service.id}
+                onClick={() => handleDetailedServiceSelection(service.id)}
+                selected={selectedServices.includes(service.id)}
+              >
+                {service.name}
+                <ServicePrice>R$ {service.price.toFixed(2)}</ServicePrice>
+                <ServiceIcon>
+                  {selectedServices.includes(service.id) ? (
+                    <FaCheck />
+                  ) : (
+                    <FaPlus />
+                  )}
+                </ServiceIcon>
+              </DetailedServiceItem>
+            ))}
+          </DetailedServiceList>
+          <ConfirmButton onClick={handleConfirmDetailedSelection}>
+            Confirmar Seleção
+          </ConfirmButton>
+        </DetailedServiceSelectionPage>
       ) : showProfessionalSelection ? (
         <ProfessionalSelectionPage>
-          <BackButton onClick={() => setShowProfessionalSelection(false)}>
+          <BackButton onClick={() => setShowDetailedServiceSelection(true)}>
             <FaArrowLeft /> Voltar
           </BackButton>
           <SectionTitle>Escolha o Profissional</SectionTitle>
-          {selectedServices.map((service) => (
-            <div key={service}>
-              <h3>{service}</h3>
-              <ProfessionalList>
-                <ProfessionalItem
-                  onClick={() =>
-                    handleSelectProfessional(service, "sem-preferencia")
-                  }
-                  selected={selectedProfessionals[service] === null}
-                >
-                  Sem Preferência
-                </ProfessionalItem>
-                {professionals.map((professional) => (
+          {selectedServices.map((serviceId) => {
+            const service = allServices.find((s) => s.id === serviceId);
+            return (
+              <div key={serviceId}>
+                <h3>{service.name}</h3>
+                <ProfessionalList>
                   <ProfessionalItem
-                    key={professional.id}
                     onClick={() =>
-                      handleSelectProfessional(service, professional.id)
+                      handleSelectProfessional(serviceId, "sem-preferencia")
                     }
-                    selected={
-                      selectedProfessionals[service] === professional.id
-                    }
+                    selected={selectedProfessionals[serviceId] === null}
                   >
-                    {professional.name}
+                    Sem Preferência
                   </ProfessionalItem>
-                ))}
-              </ProfessionalList>
-            </div>
-          ))}
+                  {professionals.map((professional) => (
+                    <ProfessionalItem
+                      key={professional.id}
+                      onClick={() =>
+                        handleSelectProfessional(serviceId, professional.id)
+                      }
+                      selected={
+                        selectedProfessionals[serviceId] === professional.id
+                      }
+                    >
+                      {professional.name}
+                    </ProfessionalItem>
+                  ))}
+                </ProfessionalList>
+              </div>
+            );
+          })}
           <ConfirmButton onClick={handleConfirmSelection}>
             Confirmar Seleção
           </ConfirmButton>
@@ -290,14 +350,20 @@ const ServicesSection = forwardRef((props, ref) => {
             <strong>Serviços e Profissionais:</strong>
             <ul>
               {Object.entries(selectedProfessionals).map(
-                ([service, professionalId]) => (
-                  <li key={service}>
-                    {service} -{" "}
-                    {professionalId === null
-                      ? "Sem Preferência"
-                      : professionals.find((p) => p.id === professionalId).name}
-                  </li>
-                )
+                ([serviceId, professionalId]) => {
+                  const service = allServices.find(
+                    (s) => s.id === parseInt(serviceId)
+                  );
+                  return (
+                    <li key={serviceId}>
+                      {service.name} -{" "}
+                      {professionalId === null
+                        ? "Sem Preferência"
+                        : professionals.find((p) => p.id === professionalId)
+                            .name}
+                    </li>
+                  );
+                }
               )}
             </ul>
           </SummaryItem>
