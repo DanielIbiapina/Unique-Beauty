@@ -44,6 +44,34 @@ const ServicesSection = forwardRef((props, ref) => {
   const [selectedTime, setSelectedTime] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
   const [availableTimes, setAvailableTimes] = useState([]);
+  const [groupedServices, setGroupedServices] = useState({});
+
+  useEffect(() => {
+    // Simule uma chamada de API para buscar os serviços
+    const fetchedServices = {
+      Cabelo: [
+        { id: 1, name: "Corte", price: 50 },
+        { id: 2, name: "Tratamento", price: 80 },
+        { id: 3, name: "Coloração", price: 120 },
+        { id: 4, name: "Escova", price: 40 },
+      ],
+      Unhas: [
+        { id: 5, name: "Alongamento Gel", price: 100 },
+        { id: 6, name: "Com Francesa", price: 60 },
+        { id: 7, name: "Verniz", price: 30 },
+        { id: 8, name: "Manutenção", price: 50 },
+      ],
+      Massagens: [
+        { id: 9, name: "Massagem corporal", price: 150 },
+        { id: 10, name: "SPA dos pés", price: 80 },
+      ],
+      Outros: [
+        { id: 11, name: "Maquiagem profissional", price: 100 },
+        { id: 12, name: "Depilação com cera e pinça", price: 70 },
+      ],
+    };
+    setGroupedServices(fetchedServices);
+  }, []);
 
   const serviceCategories = [
     {
@@ -70,22 +98,6 @@ const ServicesSection = forwardRef((props, ref) => {
         "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
       services: ["Maquiagem profissional", "Depilação com cera e pinça"],
     },
-  ];
-
-  const allServices = [
-    { id: 1, name: "Corte Feminino", price: 50 },
-    { id: 2, name: "Corte Masculino", price: 30 },
-    { id: 3, name: "Coloração", price: 80 },
-    { id: 4, name: "Escova", price: 40 },
-    { id: 5, name: "Tratamento Capilar", price: 70 },
-    { id: 6, name: "Alongamento de Unhas", price: 60 },
-    { id: 7, name: "Manicure", price: 30 },
-    { id: 8, name: "Pedicure", price: 40 },
-    { id: 9, name: "Massagem Corporal", price: 100 },
-    { id: 10, name: "SPA dos Pés", price: 80 },
-    { id: 11, name: "Maquiagem Profissional", price: 50 },
-    { id: 12, name: "Depilação com Cera", price: 30 },
-    { id: 13, name: "Depilação com Pinça", price: 20 },
   ];
 
   const professionals = [
@@ -170,7 +182,9 @@ const ServicesSection = forwardRef((props, ref) => {
   const handleFinalConfirmation = () => {
     const selection = Object.entries(selectedProfessionals).map(
       ([serviceId, professionalId]) => {
-        const service = allServices.find((s) => s.id === parseInt(serviceId));
+        const service = Object.values(groupedServices)
+          .flat()
+          .find((s) => s.id === parseInt(serviceId));
         return {
           service: service.name,
           professional:
@@ -208,8 +222,8 @@ const ServicesSection = forwardRef((props, ref) => {
                 <CategoryImage src={category.image} alt={category.name} />
                 <CategoryTitle>{category.name}</CategoryTitle>
                 <ServiceList>
-                  {category.services.map((service) => (
-                    <ServiceItem key={service}>{service}</ServiceItem>
+                  {groupedServices[category.name]?.map((service) => (
+                    <ServiceItem key={service.id}>{service.name}</ServiceItem>
                   ))}
                 </ServiceList>
               </ServiceCategory>
@@ -222,7 +236,7 @@ const ServicesSection = forwardRef((props, ref) => {
       ) : showDetailedServiceSelection ? (
         <DetailedServiceSelection
           serviceCategories={serviceCategories}
-          allServices={allServices}
+          groupedServices={groupedServices}
           selectedServices={selectedServices}
           handleDetailedServiceSelection={handleDetailedServiceSelection}
           handleConfirmDetailedSelection={handleConfirmDetailedSelection}
@@ -235,7 +249,9 @@ const ServicesSection = forwardRef((props, ref) => {
           </BackButton>
           <SectionTitle>Escolha o Profissional</SectionTitle>
           {selectedServices.map((serviceId) => {
-            const service = allServices.find((s) => s.id === serviceId);
+            const service = Object.values(groupedServices)
+              .flat()
+              .find((s) => s.id === serviceId);
             return (
               <div key={serviceId}>
                 <h3>{service.name}</h3>
@@ -334,9 +350,9 @@ const ServicesSection = forwardRef((props, ref) => {
             <ul>
               {Object.entries(selectedProfessionals).map(
                 ([serviceId, professionalId]) => {
-                  const service = allServices.find(
-                    (s) => s.id === parseInt(serviceId)
-                  );
+                  const service = Object.values(groupedServices)
+                    .flat()
+                    .find((s) => s.id === parseInt(serviceId));
                   return (
                     <li key={serviceId}>
                       {service.name} -{" "}

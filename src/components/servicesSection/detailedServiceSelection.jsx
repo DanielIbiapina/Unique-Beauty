@@ -16,7 +16,7 @@ import { SectionTitle } from "../../App.styles";
 
 const DetailedServiceSelection = ({
   serviceCategories,
-  allServices,
+  groupedServices,
   selectedServices,
   handleDetailedServiceSelection,
   handleConfirmDetailedSelection,
@@ -32,36 +32,27 @@ const DetailedServiceSelection = ({
         <CategorySection key={category.name}>
           <CategoryTitle>{category.name}</CategoryTitle>
           <DetailedServiceList>
-            {category.services.map((serviceName) => {
-              const serviceDetails = allServices.find(
-                (s) => s.name === serviceName
-              );
-              if (!serviceDetails) {
-                console.warn(`Serviço não encontrado: ${serviceName}`);
-                return null;
-              }
-              return (
-                <DetailedServiceItem
-                  key={serviceDetails.id}
-                  onClick={() =>
-                    handleDetailedServiceSelection(serviceDetails.id)
-                  }
-                  selected={selectedServices.includes(serviceDetails.id)}
-                >
-                  <ServiceName>{serviceName}</ServiceName>
-                  <ServicePrice>
-                    R$ {serviceDetails.price.toFixed(2)}
-                  </ServicePrice>
-                  <ServiceIcon>
-                    {selectedServices.includes(serviceDetails.id) ? (
-                      <FaCheck />
-                    ) : (
-                      <FaPlus />
-                    )}
-                  </ServiceIcon>
-                </DetailedServiceItem>
-              );
-            })}
+            {groupedServices[category.name]?.map((serviceDetails) => (
+              <DetailedServiceItem
+                key={serviceDetails.id}
+                onClick={() =>
+                  handleDetailedServiceSelection(serviceDetails.id)
+                }
+                selected={selectedServices.includes(serviceDetails.id)}
+              >
+                <ServiceName>{serviceDetails.name}</ServiceName>
+                <ServicePrice>
+                  R$ {serviceDetails.price.toFixed(2)}
+                </ServicePrice>
+                <ServiceIcon>
+                  {selectedServices.includes(serviceDetails.id) ? (
+                    <FaCheck />
+                  ) : (
+                    <FaPlus />
+                  )}
+                </ServiceIcon>
+              </DetailedServiceItem>
+            ))}
           </DetailedServiceList>
         </CategorySection>
       ))}

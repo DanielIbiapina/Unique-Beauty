@@ -118,16 +118,28 @@ export const ProfessionalItem = styled.li`
 `;
 
 export const BackButton = styled.button`
-  background: none;
-  border: none;
+  background-color: white; // Fundo rosa claro
+  color: #ff69b4; // Cor do texto rosa
+  border: 2px solid #ff69b4; // Borda rosa
+  border-radius: 25px; // Bordas arredondadas
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
+  padding: 10px 20px;
   margin-bottom: 20px;
 
+  transition: all 0.3s ease;
+
   svg {
-    margin-right: 5px;
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  &:hover {
+    background-color: #ff69b4;
+    color: white;
   }
 `;
 
@@ -239,31 +251,46 @@ export const DetailedServiceList = styled.ul`
 
 export const DetailedServiceItem = styled.li`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  padding: 15px;
-  border: 1px solid #ffb6c1;
+  align-items: center;
+  padding: 0.75rem 1rem;
+
   border-radius: 8px;
-  cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#ffe4e1" : "white")};
+  background-color: ${(props) => (props.selected ? "#ffe4e1" : "#f8f8f8")};
   transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  // Reduzindo a altura e adicionando uma altura mínima
+  height: 40px;
+  min-height: 40px;
 
   &:hover {
-    background-color: #fff0f5;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffe4e1;
   }
 `;
 
 export const ServiceName = styled.span`
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
 `;
 
 export const ServicePrice = styled.span`
-  font-weight: bold;
-  font-size: 18px;
-  color: #ff69b4;
-  align-self: flex-end;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 1rem;
 `;
+
+/*export const ServiceIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: ${(props) => (props.selected ? "#ff69b4" : "#ddd")};
+  color: white;
+  font-size: 0.8rem;
+`;*/
