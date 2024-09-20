@@ -1,4 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
+import DetailedServiceSelection from "./detailedServiceSelection";
 import { FaCheck, FaPlus, FaArrowLeft } from "react-icons/fa";
 import {
   ServiceCategories,
@@ -10,6 +11,7 @@ import {
   ServiceIcon,
   ScheduleButton,
   DetailedServiceSelectionPage,
+  CategorySection,
   DetailedServiceList,
   DetailedServiceItem,
   ServicePrice,
@@ -25,6 +27,7 @@ import {
   TimeItem,
   SummaryPage,
   SummaryItem,
+  ServiceName,
 } from "./styles";
 import { Section, SectionTitle } from "../../App.styles";
 
@@ -217,34 +220,14 @@ const ServicesSection = forwardRef((props, ref) => {
           </ScheduleButton>
         </>
       ) : showDetailedServiceSelection ? (
-        <DetailedServiceSelectionPage>
-          <BackButton onClick={() => setShowDetailedServiceSelection(false)}>
-            <FaArrowLeft /> Voltar
-          </BackButton>
-          <SectionTitle>Selecione os Serviços</SectionTitle>
-          <DetailedServiceList>
-            {allServices.map((service) => (
-              <DetailedServiceItem
-                key={service.id}
-                onClick={() => handleDetailedServiceSelection(service.id)}
-                selected={selectedServices.includes(service.id)}
-              >
-                {service.name}
-                <ServicePrice>R$ {service.price.toFixed(2)}</ServicePrice>
-                <ServiceIcon>
-                  {selectedServices.includes(service.id) ? (
-                    <FaCheck />
-                  ) : (
-                    <FaPlus />
-                  )}
-                </ServiceIcon>
-              </DetailedServiceItem>
-            ))}
-          </DetailedServiceList>
-          <ConfirmButton onClick={handleConfirmDetailedSelection}>
-            Confirmar Seleção
-          </ConfirmButton>
-        </DetailedServiceSelectionPage>
+        <DetailedServiceSelection
+          serviceCategories={serviceCategories}
+          allServices={allServices}
+          selectedServices={selectedServices}
+          handleDetailedServiceSelection={handleDetailedServiceSelection}
+          handleConfirmDetailedSelection={handleConfirmDetailedSelection}
+          setShowDetailedServiceSelection={setShowDetailedServiceSelection}
+        />
       ) : showProfessionalSelection ? (
         <ProfessionalSelectionPage>
           <BackButton onClick={() => setShowDetailedServiceSelection(true)}>

@@ -27,14 +27,6 @@ export const CategoryImage = styled.img`
   cursor: pointer;
 `;
 
-export const CategoryTitle = styled.h3`
-  text-align: center;
-  padding: 1rem;
-  margin: 0;
-  background-color: #ff69b4;
-  color: white;
-`;
-
 export const ServiceList = styled.ul`
   list-style: none;
   padding: 1rem;
@@ -140,17 +132,18 @@ export const BackButton = styled.button`
 `;
 
 export const ConfirmButton = styled.button`
-  background-color: #4caf50;
+  background-color: #ff69b4;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
   margin-top: 20px;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #45a049;
+    background-color: #ff1493;
   }
 `;
 
@@ -221,30 +214,56 @@ export const DateItem = styled.li`
 `;
 
 export const DetailedServiceSelectionPage = styled(ProfessionalSelectionPage)`
-  // Herda os estilos de ProfessionalSelectionPage
+  padding: 20px;
+`;
+
+export const CategorySection = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const CategoryTitle = styled.h2`
+  color: #ff69b4;
+  font-size: 24px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ff69b4;
+  padding-bottom: 5px;
 `;
 
 export const DetailedServiceList = styled.ul`
   list-style-type: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
 `;
 
 export const DetailedServiceItem = styled.li`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #ffb6c1;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#e0e0e0" : "white")};
+  background-color: ${(props) => (props.selected ? "#ffe4e1" : "white")};
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #fff0f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const ServiceName = styled.span`
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
 `;
 
 export const ServicePrice = styled.span`
   font-weight: bold;
+  font-size: 18px;
+  color: #ff69b4;
+  align-self: flex-end;
 `;
