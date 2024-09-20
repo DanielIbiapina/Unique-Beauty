@@ -86,7 +86,7 @@ export const ProfessionalSelectionPage = styled.div`
   background-color: white;
   z-index: 1000;
   overflow-y: auto;
-  padding: 20px;
+  padding: 30px;
   animation: slideIn 0.3s ease-out;
 
   @keyframes slideIn {
@@ -102,18 +102,43 @@ export const ProfessionalSelectionPage = styled.div`
 export const ProfessionalList = styled.ul`
   list-style-type: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
 `;
 
 export const ProfessionalItem = styled.li`
-  padding: 10px;
+  /*padding: 15px;
   margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #ff69b4;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#e0e0e0" : "white")};
+  background-color: ${(props) => (props.selected ? "#ffe4e1" : "white")};
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #ffe4e1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }*/
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+
+  border-radius: 8px;
+  background-color: ${(props) => (props.selected ? "#ffe4e1" : "#f8f8f8")};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  // Reduzindo a altura e adicionando uma altura mínima
+  height: 45.6px;
+  min-height: 40px;
+
+  &:hover {
+    background-color: #ffe4e1;
   }
 `;
 
@@ -143,20 +168,9 @@ export const BackButton = styled.button`
   }
 `;
 
-export const ConfirmButton = styled.button`
-  background-color: #ff69b4;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #ff1493;
-  }
+export const ConfirmButton = styled(ScheduleButton)`
+  // Herda os estilos de ScheduleButton para manter consistência
+  margin-top: 30px;
 `;
 
 export const DateTimeSelectionPage = styled(ProfessionalSelectionPage)`
@@ -165,26 +179,19 @@ export const DateTimeSelectionPage = styled(ProfessionalSelectionPage)`
 
 export const DatePicker = styled.input`
   margin: 20px 0;
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
+  border: 1px solid #ff69b4;
+  border-radius: 8px;
+  background-color: white;
 `;
 
-export const TimeList = styled.ul`
-  list-style-type: none;
-  padding: 0;
+export const TimeList = styled(ProfessionalList)`
+  // Herda os estilos de ProfessionalList
 `;
 
-export const TimeItem = styled.li`
-  padding: 10px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#e0e0e0" : "white")};
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
+export const TimeItem = styled(ProfessionalItem)`
+  // Herda os estilos de ProfessionalItem
 `;
 
 export const SummaryPage = styled(ProfessionalSelectionPage)`
@@ -194,14 +201,18 @@ export const SummaryPage = styled(ProfessionalSelectionPage)`
 export const SummaryItem = styled.div`
   margin: 15px 0;
   font-size: 16px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ff69b4;
 
   ul {
-    margin-top: 5px;
+    margin-top: 10px;
     padding-left: 20px;
   }
 
   li {
-    margin: 5px 0;
+    margin: 8px 0;
   }
 `;
 
@@ -263,7 +274,7 @@ export const DetailedServiceItem = styled.li`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   // Reduzindo a altura e adicionando uma altura mínima
-  height: 40px;
+  height: 45.6px;
   min-height: 40px;
 
   &:hover {
