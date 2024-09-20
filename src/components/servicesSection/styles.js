@@ -108,7 +108,9 @@ export const ProfessionalList = styled.ul`
 `;
 
 export const ProfessionalItem = styled.li`
-  /*padding: 15px;
+  /*display: flex;
+  align-items: center;
+  padding: 10px;
   margin: 5px 0;
   border: 1px solid #ff69b4;
   border-radius: 8px;
@@ -125,21 +127,33 @@ export const ProfessionalItem = styled.li`
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-
   border-radius: 8px;
   background-color: ${(props) => (props.selected ? "#ffe4e1" : "#f8f8f8")};
   transition: all 0.3s ease;
   cursor: pointer;
   border: 1px solid black;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-  // Reduzindo a altura e adicionando uma altura mínima
-  height: 45.6px;
-  min-height: 40px;
-
+  height: 58.6px;
+  min-height: 50px;
   &:hover {
     background-color: #ffe4e1;
   }
+`;
+
+export const ProfessionalImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+`;
+
+export const ProfessionalInfo = styled.div`
+  flex: 1;
+`;
+
+export const ProfessionalName = styled.span`
+  font-weight: bold;
 `;
 
 export const BackButton = styled.button`

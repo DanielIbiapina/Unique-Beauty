@@ -18,6 +18,9 @@ import {
   ProfessionalSelectionPage,
   ProfessionalList,
   ProfessionalItem,
+  ProfessionalImage,
+  ProfessionalInfo,
+  ProfessionalName,
   BackButton,
   ConfirmButton,
   DateTimeSelectionPage,
@@ -30,6 +33,7 @@ import {
   ServiceName,
 } from "./styles";
 import { Section, SectionTitle } from "../../App.styles";
+import Janyce from "../../assets/mamaeSalao.jpg";
 
 const ServicesSection = forwardRef((props, ref) => {
   const [selectedServices, setSelectedServices] = useState([]);
@@ -105,10 +109,26 @@ const ServicesSection = forwardRef((props, ref) => {
       id: 1,
       name: "Janyce Ibiapina",
       specialties: ["Tratamento facial", "Estética"],
+      imageUrl: Janyce,
     },
-    { id: 2, name: "Joana Silva", specialties: ["Manicure", "Pedicure"] },
-    { id: 3, name: "Carol Duarte", specialties: ["Maquiagem"] },
-    { id: 4, name: "Vanessa Silva", specialties: ["Massagem"] },
+    {
+      id: 2,
+      name: "Joana Silva",
+      specialties: ["Manicure", "Pedicure"],
+      imageUrl: Janyce,
+    },
+    {
+      id: 3,
+      name: "Carol Duarte",
+      specialties: ["Maquiagem"],
+      imageUrl: Janyce,
+    },
+    {
+      id: 4,
+      name: "Vanessa Silva",
+      specialties: ["Massagem"],
+      imageUrl: Janyce,
+    },
   ];
 
   useEffect(() => {
@@ -274,7 +294,13 @@ const ServicesSection = forwardRef((props, ref) => {
                         selectedProfessionals[serviceId] === professional.id
                       }
                     >
-                      {professional.name}
+                      <ProfessionalImage
+                        src={professional.imageUrl}
+                        alt={professional.name}
+                      />
+                      <ProfessionalInfo>
+                        <ProfessionalName>{professional.name}</ProfessionalName>
+                      </ProfessionalInfo>
                     </ProfessionalItem>
                   ))}
                 </ProfessionalList>
