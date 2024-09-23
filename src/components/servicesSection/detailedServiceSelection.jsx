@@ -28,11 +28,11 @@ const DetailedServiceSelection = ({
         <FaArrowLeft /> Voltar
       </BackButton>
       <SectionTitle>Selecione os Serviços</SectionTitle>
-      {serviceCategories.map((category) => (
-        <CategorySection key={category.name}>
-          <CategoryTitle>{category.name}</CategoryTitle>
+      {Object.entries(groupedServices).map(([categoryName, services]) => (
+        <CategorySection key={categoryName}>
+          <CategoryTitle>{categoryName}</CategoryTitle>
           <DetailedServiceList>
-            {groupedServices[category.name]?.map((serviceDetails) => (
+            {services.map((serviceDetails) => (
               <DetailedServiceItem
                 key={serviceDetails.id}
                 onClick={() =>

@@ -51,58 +51,23 @@ const ServicesSection = forwardRef((props, ref) => {
   const [groupedServices, setGroupedServices] = useState({});
 
   useEffect(() => {
-    // Simule uma chamada de API para buscar os serviços
-    const fetchedServices = {
-      Cabelo: [
-        { id: 1, name: "Corte", price: 50 },
-        { id: 2, name: "Tratamento", price: 80 },
-        { id: 3, name: "Coloração", price: 120 },
-        { id: 4, name: "Escova", price: 40 },
-      ],
-      Unhas: [
-        { id: 5, name: "Alongamento Gel", price: 100 },
-        { id: 6, name: "Com Francesa", price: 60 },
-        { id: 7, name: "Verniz", price: 30 },
-        { id: 8, name: "Manutenção", price: 50 },
-      ],
-      Massagens: [
-        { id: 9, name: "Massagem corporal", price: 150 },
-        { id: 10, name: "SPA dos pés", price: 80 },
-      ],
-      Outros: [
-        { id: 11, name: "Maquiagem profissional", price: 100 },
-        { id: 12, name: "Depilação com cera e pinça", price: 70 },
-      ],
-    };
-    setGroupedServices(fetchedServices);
-  }, []);
+    const fetchServices = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/services/grouped");
 
-  const serviceCategories = [
-    {
-      name: "Cabelo",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Corte", "Tratamento", "Coloração", "Escova"],
-    },
-    {
-      name: "Unhas",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Alongamento Gel", "Com Francesa", "Verniz", "Manutenção"],
-    },
-    {
-      name: "Massagens",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Massagem corporal", "SPA dos pés"],
-    },
-    {
-      name: "Outros",
-      image:
-        "https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg",
-      services: ["Maquiagem profissional", "Depilação com cera e pinça"],
-    },
-  ];
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const groupedServices = await response.json();
+        setGroupedServices(groupedServices);
+      } catch (error) {
+        console.error("Erro ao buscar serviços agrupados:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const professionals = [
     {
@@ -237,17 +202,34 @@ const ServicesSection = forwardRef((props, ref) => {
         <>
           <SectionTitle>Nossos Serviços</SectionTitle>
           <ServiceCategories>
-            {serviceCategories.map((category) => (
-              <ServiceCategory key={category.name}>
-                <CategoryImage src={category.image} alt={category.name} />
-                <CategoryTitle>{category.name}</CategoryTitle>
-                <ServiceList>
-                  {groupedServices[category.name]?.map((service) => (
-                    <ServiceItem key={service.id}>{service.name}</ServiceItem>
-                  ))}
-                </ServiceList>
-              </ServiceCategory>
-            ))}
+            <ServiceCategory>
+              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryTitle>Cabelo</CategoryTitle>
+              <ServiceList>
+                <ServiceItem>Hidratação</ServiceItem>
+              </ServiceList>
+            </ServiceCategory>
+            <ServiceCategory>
+              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryTitle>Unhas</CategoryTitle>
+              <ServiceList>
+                <ServiceItem>Verniz</ServiceItem>
+              </ServiceList>
+            </ServiceCategory>
+            <ServiceCategory>
+              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryTitle>Massagens</CategoryTitle>
+              <ServiceList>
+                <ServiceItem>Corpo todo</ServiceItem>
+              </ServiceList>
+            </ServiceCategory>
+            <ServiceCategory>
+              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryTitle>Outros</CategoryTitle>
+              <ServiceList>
+                <ServiceItem>Maquiagens</ServiceItem>
+              </ServiceList>
+            </ServiceCategory>
           </ServiceCategories>
           <ScheduleButton onClick={handleSchedule}>
             Ver Todos os Serviços e Agendar
@@ -255,7 +237,7 @@ const ServicesSection = forwardRef((props, ref) => {
         </>
       ) : showDetailedServiceSelection ? (
         <DetailedServiceSelection
-          serviceCategories={serviceCategories}
+          serviceCategories={Object.keys(groupedServices)}
           groupedServices={groupedServices}
           selectedServices={selectedServices}
           handleDetailedServiceSelection={handleDetailedServiceSelection}
