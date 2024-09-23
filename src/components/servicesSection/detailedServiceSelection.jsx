@@ -12,7 +12,7 @@ import {
   BackButton,
 } from "./styles";
 import { FaArrowLeft, FaCheck, FaPlus } from "react-icons/fa";
-import { SectionTitle } from "../../App.styles";
+import { SectionTitle } from "../../pages/home/styles";
 
 const DetailedServiceSelection = ({
   serviceCategories,

@@ -32,7 +32,7 @@ import {
   SummaryItem,
   ServiceName,
 } from "./styles";
-import { Section, SectionTitle } from "../../App.styles";
+import { Section, SectionTitle } from "../../pages/home/styles";
 import Janyce from "../../assets/mamaeSalao.jpg";
 
 const ServicesSection = forwardRef((props, ref) => {
