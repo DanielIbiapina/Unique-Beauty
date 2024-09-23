@@ -49,6 +49,8 @@ const ServicesSection = forwardRef((props, ref) => {
   const [availableDates, setAvailableDates] = useState([]);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [groupedServices, setGroupedServices] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [professionals, setProfessionals] = useState([]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -66,37 +68,19 @@ const ServicesSection = forwardRef((props, ref) => {
       }
     };
 
-    fetchServices();
-  }, []);
+    const fetchProfessionals = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/professionals");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const professionalsData = await response.json();
+        setProfessionals(professionalsData);
+      } catch (error) {
+        console.error("Erro ao buscar profissionais:", error);
+      }
+    };
 
-  const professionals = [
-    {
-      id: 1,
-      name: "Janyce Ibiapina",
-      specialties: ["Tratamento facial", "Estética"],
-      imageUrl: Janyce,
-    },
-    {
-      id: 2,
-      name: "Joana Silva",
-      specialties: ["Manicure", "Pedicure"],
-      imageUrl: Janyce,
-    },
-    {
-      id: 3,
-      name: "Carol Duarte",
-      specialties: ["Maquiagem"],
-      imageUrl: Janyce,
-    },
-    {
-      id: 4,
-      name: "Vanessa Silva",
-      specialties: ["Massagem"],
-      imageUrl: Janyce,
-    },
-  ];
-
-  useEffect(() => {
     const fetchedDates = [
       "2023-05-20",
       "2023-05-21",
@@ -104,7 +88,11 @@ const ServicesSection = forwardRef((props, ref) => {
       "2023-05-23",
       "2023-05-24",
     ];
+
     setAvailableDates(fetchedDates);
+
+    fetchServices();
+    fetchProfessionals();
   }, []);
 
   const handleDateSelection = (date) => {
@@ -162,35 +150,62 @@ const ServicesSection = forwardRef((props, ref) => {
   const handleShowSummary = () => {
     setShowDateTimeSelection(false);
     setShowSummary(true);
+
+    // Calcular o preço total
+    const total = selectedServices.reduce((sum, serviceId) => {
+      const service = Object.values(groupedServices)
+        .flat()
+        .find((s) => s.id === serviceId);
+      return sum + service.price;
+    }, 0);
+    setTotalPrice(total);
   };
 
-  const handleFinalConfirmation = () => {
-    const selection = Object.entries(selectedProfessionals).map(
-      ([serviceId, professionalId]) => {
+  const handleFinalConfirmation = async () => {
+    const appointmentData = {
+      dateTime: `${selectedDate}T${selectedTime}:00Z`,
+      status: "confirmado",
+      clientId: 1, // Assumindo que o ID do cliente é 1. Ajuste conforme necessário.
+      services: selectedServices.map((serviceId) => {
         const service = Object.values(groupedServices)
           .flat()
-          .find((s) => s.id === parseInt(serviceId));
+          .find((s) => s.id === serviceId);
         return {
-          service: service.name,
-          professional:
-            professionalId === null
-              ? "Sem Preferência"
-              : professionals.find((p) => p.id === professionalId).name,
+          serviceId: service.id,
+          professionalId: selectedProfessionals[serviceId] || null,
+          price: service.price,
         };
+      }),
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(appointmentData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
 
-    console.log("Agendamento final:", {
-      services: selection,
-      date: selectedDate,
-      time: selectedTime,
-    });
+      const result = await response.json();
+      console.log("Agendamento confirmado:", result);
 
-    setShowSummary(false);
-    setSelectedServices([]);
-    setSelectedProfessionals({});
-    setSelectedDate("");
-    setSelectedTime("");
+      // Resetar o estado após o agendamento bem-sucedido
+      setShowSummary(false);
+      setSelectedServices([]);
+      setSelectedProfessionals({});
+      setSelectedDate("");
+      setSelectedTime("");
+    } catch (error) {
+      console.error("Erro ao confirmar o agendamento:", error);
+      alert(
+        "Ocorreu um erro ao confirmar o agendamento. Por favor, tente novamente."
+      );
+    }
   };
 
   return (
@@ -354,7 +369,7 @@ const ServicesSection = forwardRef((props, ref) => {
             <strong>Horário:</strong> {selectedTime}
           </SummaryItem>
           <SummaryItem>
-            <strong>Serviços e Profissionais:</strong>
+            <strong>Serviços, Profissionais e Preços:</strong>
             <ul>
               {Object.entries(selectedProfessionals).map(
                 ([serviceId, professionalId]) => {
@@ -367,12 +382,16 @@ const ServicesSection = forwardRef((props, ref) => {
                       {professionalId === null
                         ? "Sem Preferência"
                         : professionals.find((p) => p.id === professionalId)
-                            .name}
+                            .name}{" "}
+                      - R$ {service.price.toFixed(2)}
                     </li>
                   );
                 }
               )}
             </ul>
+          </SummaryItem>
+          <SummaryItem>
+            <strong>Preço Total:</strong> R$ {totalPrice.toFixed(2)}
           </SummaryItem>
           <ConfirmButton onClick={handleFinalConfirmation}>
             Confirmar Agendamento
