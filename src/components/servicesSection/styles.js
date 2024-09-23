@@ -22,7 +22,7 @@ export const ServiceCategory = styled.div`
 
 export const CategoryImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
   cursor: pointer;
 `;
@@ -200,14 +200,6 @@ export const DatePicker = styled.input`
   background-color: white;
 `;
 
-export const TimeList = styled(ProfessionalList)`
-  // Herda os estilos de ProfessionalList
-`;
-
-export const TimeItem = styled(ProfessionalItem)`
-  // Herda os estilos de ProfessionalItem
-`;
-
 export const SummaryPage = styled(ProfessionalSelectionPage)`
   // Herda os estilos de ProfessionalSelectionPage
 `;
@@ -215,7 +207,7 @@ export const SummaryPage = styled(ProfessionalSelectionPage)`
 export const SummaryItem = styled.div`
   margin: 15px 0;
   font-size: 16px;
-  background-color: white;
+  background-color: #f8f8f8;
   padding: 15px;
   border-radius: 8px;
   border: 1px solid #ff69b4;
@@ -227,26 +219,6 @@ export const SummaryItem = styled.div`
 
   li {
     margin: 8px 0;
-  }
-`;
-
-export const DateList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
-
-export const DateItem = styled.li`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#e0e0e0" : "white")};
-
-  &:hover {
-    background-color: #f0f0f0;
   }
 `;
 
@@ -295,6 +267,24 @@ export const DetailedServiceItem = styled.li`
     background-color: #ffe4e1;
   }
 `;
+
+export const TimeList = styled(ProfessionalList)`
+  // Herda os estilos de ProfessionalList
+`;
+
+export const TimeItem = styled(DetailedServiceItem)`
+  // Herda os estilos de ProfessionalItem
+`;
+
+export const DateList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+export const DateItem = styled(DetailedServiceItem)``;
 
 export const ServiceName = styled.span`
   flex: 1;

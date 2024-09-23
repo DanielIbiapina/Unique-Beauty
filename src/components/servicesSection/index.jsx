@@ -222,20 +222,29 @@ const ServicesSection = forwardRef((props, ref) => {
               <CategoryTitle>Cabelo</CategoryTitle>
               <ServiceList>
                 <ServiceItem>Hidratação</ServiceItem>
+                <ServiceItem>Corte</ServiceItem>
+                <ServiceItem>Pintura</ServiceItem>
+                <ServiceItem>Escova</ServiceItem>
               </ServiceList>
             </ServiceCategory>
             <ServiceCategory>
-              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryImage src="https://github.com/DanielIbiapina/Unique-Beauty/blob/adminpage/src/assets/unhas.jpg?raw=true" />
               <CategoryTitle>Unhas</CategoryTitle>
               <ServiceList>
                 <ServiceItem>Verniz</ServiceItem>
+                <ServiceItem>Com francesa</ServiceItem>
+                <ServiceItem>Alongamento</ServiceItem>
+                <ServiceItem>Manutenção</ServiceItem>
               </ServiceList>
             </ServiceCategory>
             <ServiceCategory>
               <CategoryImage src="https://www.cecilydayspa.co.uk/wp-content/uploads/2023/10/Berkhamsted-Beauty-Salon-How-to-Prepare-for-Your-First-Waxing-Appointment-in-a-While-Blog-Image.jpg" />
-              <CategoryTitle>Massagens</CategoryTitle>
+              <CategoryTitle>Depilação</CategoryTitle>
               <ServiceList>
-                <ServiceItem>Corpo todo</ServiceItem>
+                <ServiceItem>Axilas</ServiceItem>
+                <ServiceItem>Virilha</ServiceItem>
+                <ServiceItem>Perna</ServiceItem>
+                <ServiceItem>Sobrancelhas</ServiceItem>
               </ServiceList>
             </ServiceCategory>
             <ServiceCategory>
@@ -243,6 +252,7 @@ const ServicesSection = forwardRef((props, ref) => {
               <CategoryTitle>Outros</CategoryTitle>
               <ServiceList>
                 <ServiceItem>Maquiagens</ServiceItem>
+                <ServiceItem>Massagens</ServiceItem>
               </ServiceList>
             </ServiceCategory>
           </ServiceCategories>
