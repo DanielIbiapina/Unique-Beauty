@@ -232,7 +232,7 @@ const ServicesSection = forwardRef((props, ref) => {
               </ServiceList>
             </ServiceCategory>
             <ServiceCategory>
-              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryImage src="https://www.cecilydayspa.co.uk/wp-content/uploads/2023/10/Berkhamsted-Beauty-Salon-How-to-Prepare-for-Your-First-Waxing-Appointment-in-a-While-Blog-Image.jpg" />
               <CategoryTitle>Massagens</CategoryTitle>
               <ServiceList>
                 <ServiceItem>Corpo todo</ServiceItem>

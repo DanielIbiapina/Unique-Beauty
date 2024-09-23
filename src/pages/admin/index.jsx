@@ -21,6 +21,10 @@ import {
   ConfirmationButtons,
   ConfirmButton,
   CancelButton,
+  RevenueSection,
+  RevenueCard,
+  RevenueTitle,
+  RevenueAmount,
 } from "./styles";
 
 function AdminPage() {
@@ -31,10 +35,16 @@ function AdminPage() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
+  const [professionalRevenues, setProfessionalRevenues] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
   useEffect(() => {
     fetchProfessionals();
-  }, []);
+    fetchMonthlyRevenue();
+    fetchProfessionalRevenues();
+  }, [selectedYear, selectedMonth]);
 
   const fetchProfessionals = async () => {
     try {
@@ -43,6 +53,36 @@ function AdminPage() {
     } catch (error) {
       console.error("Erro ao buscar profissionais:", error);
     }
+  };
+
+  const fetchMonthlyRevenue = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/appointments/${selectedYear}/${selectedMonth}/faturamento`
+      );
+
+      setMonthlyRevenue(response.data.faturamento);
+    } catch (error) {
+      console.error("Erro ao buscar faturamento mensal:", error);
+    }
+  };
+
+  const fetchProfessionalRevenues = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/appointments/${selectedYear}/${selectedMonth}/faturamento/profissional`
+      );
+      console.log(response.data.faturamentoPorProfissional);
+      setProfessionalRevenues(response.data.faturamentoPorProfissional);
+    } catch (error) {
+      console.error("Erro ao buscar faturamento dos profissionais:", error);
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const [year, month] = e.target.value.split("-");
+    setSelectedYear(parseInt(year));
+    setSelectedMonth(parseInt(month));
   };
 
   const handleInputChange = (e) => {
@@ -74,6 +114,33 @@ function AdminPage() {
 
   return (
     <AdminContainer>
+      <RevenueSection>
+        <SectionTitle>Faturamento</SectionTitle>
+        <input
+          type="month"
+          value={`${selectedYear}-${selectedMonth.toString().padStart(2, "0")}`}
+          onChange={handleDateChange}
+        />
+        <RevenueCard>
+          <RevenueTitle>Faturamento do Mês</RevenueTitle>
+          <RevenueAmount>
+            R$ {monthlyRevenue ? monthlyRevenue.toFixed(2) : "0.00"}
+          </RevenueAmount>
+        </RevenueCard>
+      </RevenueSection>
+
+      <RevenueSection>
+        <SectionTitle>Faturamento por Profissional</SectionTitle>
+        {professionalRevenues.map((prof) => (
+          <RevenueCard key={prof.ProfessionalId}>
+            <RevenueTitle>{prof.nome}</RevenueTitle>
+            <RevenueAmount>
+              R$ {prof.faturamento ? prof.faturamento.toFixed(2) : "0.00"}
+            </RevenueAmount>
+          </RevenueCard>
+        ))}
+      </RevenueSection>
+
       <AdminSection>
         <SectionTitle>Gerenciar Profissionais</SectionTitle>
         <ProfessionalGrid>

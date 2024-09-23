@@ -161,3 +161,26 @@ export const CancelButton = styled.button`
     background-color: #999999;
   }
 `;
+
+export const RevenueAmount = styled.span`
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #4caf50; // Cor verde para valores positivos
+`;
+export const RevenueSection = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const RevenueCard = styled.div`
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+`;
+
+export const RevenueTitle = styled.h3`
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+`;
