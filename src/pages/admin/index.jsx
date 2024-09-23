@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import {
+  FaTrash,
+  FaPlus,
+  FaCalendarAlt,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import {
   AdminContainer,
   AdminSection,
@@ -25,6 +31,15 @@ import {
   RevenueCard,
   RevenueTitle,
   RevenueAmount,
+  MonthSelector,
+  MonthSelectorButton,
+  MonthDropdown,
+  MonthOption,
+  DateSelector,
+  DateSelectorButton,
+  DateDropdown,
+  YearSelector,
+  YearButton,
 } from "./styles";
 
 function AdminPage() {
@@ -40,6 +55,8 @@ function AdminPage() {
   const [professionalRevenues, setProfessionalRevenues] = useState([]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [isMonthSelectorOpen, setIsMonthSelectorOpen] = useState(false);
+  const [isDateSelectorOpen, setIsDateSelectorOpen] = useState(false);
 
   useEffect(() => {
     fetchProfessionals();
@@ -113,15 +130,70 @@ function AdminPage() {
     }
   };
 
+  const monthNames = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
+
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month);
+    setIsMonthSelectorOpen(false);
+  };
+
+  const handleYearChange = (increment) => {
+    setSelectedYear((prevYear) => prevYear + increment);
+  };
+
+  const closeDateSelector = () => {
+    setIsDateSelectorOpen(false);
+  };
+
   return (
     <AdminContainer>
       <RevenueSection>
         <SectionTitle>Faturamento</SectionTitle>
-        <input
-          type="month"
-          value={`${selectedYear}-${selectedMonth.toString().padStart(2, "0")}`}
-          onChange={handleDateChange}
-        />
+        <DateSelector>
+          <DateSelectorButton
+            onClick={() => setIsDateSelectorOpen(!isDateSelectorOpen)}
+          >
+            <FaCalendarAlt /> {monthNames[selectedMonth - 1]} {selectedYear}
+          </DateSelectorButton>
+          {isDateSelectorOpen && (
+            <DateDropdown>
+              <YearSelector>
+                <YearButton onClick={() => handleYearChange(-1)}>
+                  <FaChevronLeft />
+                </YearButton>
+                <span>{selectedYear}</span>
+                <YearButton onClick={() => handleYearChange(1)}>
+                  <FaChevronRight />
+                </YearButton>
+              </YearSelector>
+              {monthNames.map((month, index) => (
+                <MonthOption
+                  key={index}
+                  onClick={() => {
+                    handleMonthSelect(index + 1);
+                    closeDateSelector();
+                  }}
+                  selected={selectedMonth === index + 1}
+                >
+                  {month}
+                </MonthOption>
+              ))}
+            </DateDropdown>
+          )}
+        </DateSelector>
         <RevenueCard>
           <RevenueTitle>Faturamento do Mês</RevenueTitle>
           <RevenueAmount>

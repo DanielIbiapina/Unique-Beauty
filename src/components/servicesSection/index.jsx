@@ -82,11 +82,11 @@ const ServicesSection = forwardRef((props, ref) => {
     };
 
     const fetchedDates = [
-      "2023-05-20",
-      "2023-05-21",
-      "2023-05-22",
-      "2023-05-23",
-      "2023-05-24",
+      "2024-10-20",
+      "2024-10-21",
+      "2024-10-22",
+      "2024-10-23",
+      "2024-10-24",
     ];
 
     setAvailableDates(fetchedDates);

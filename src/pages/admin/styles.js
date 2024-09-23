@@ -184,3 +184,105 @@ export const RevenueTitle = styled.h3`
   margin-bottom: 10px;
   color: #333;
 `;
+
+export const MonthSelector = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+`;
+
+export const MonthSelectorButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  svg {
+    margin-right: 10px;
+  }
+`;
+
+export const MonthDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+`;
+
+export const MonthOption = styled.div`
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: ${(props) => (props.selected ? "#e0e0e0" : "transparent")};
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const DateSelector = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+`;
+
+export const DateSelectorButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  svg {
+    margin-right: 10px;
+  }
+`;
+
+export const DateDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+`;
+
+export const YearSelector = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+`;
+
+export const YearButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+
+  &:hover {
+    color: #0074d9;
+  }
+`;
