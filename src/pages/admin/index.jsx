@@ -32,6 +32,7 @@ function AdminPage() {
   const [newProfessional, setNewProfessional] = useState({
     name: "",
     imageUrl: "",
+    role: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
@@ -94,7 +95,7 @@ function AdminPage() {
     e.preventDefault();
     try {
       await axios.post("http://localhost:4000/professionals", newProfessional);
-      setNewProfessional({ name: "", imageUrl: "" });
+      setNewProfessional({ name: "", imageUrl: "", role: "" });
       fetchProfessionals();
       setIsModalOpen(false);
     } catch (error) {
@@ -177,6 +178,14 @@ function AdminPage() {
                 name="imageUrl"
                 placeholder="URL da Imagem do Profissional"
                 value={newProfessional.imageUrl}
+                onChange={handleInputChange}
+                required
+              />
+              <FormInput
+                type="text"
+                name="role"
+                placeholder="Cargo do Profissional"
+                value={newProfessional.role}
                 onChange={handleInputChange}
                 required
               />

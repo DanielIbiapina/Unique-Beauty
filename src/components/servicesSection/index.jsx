@@ -248,7 +248,7 @@ const ServicesSection = forwardRef((props, ref) => {
               </ServiceList>
             </ServiceCategory>
             <ServiceCategory>
-              <CategoryImage src="https://img.freepik.com/fotos-gratis/mulher-no-salao-de-cabeleireiro_144627-8812.jpg" />
+              <CategoryImage src="https://github.com/DanielIbiapina/Unique-Beauty/blob/adminpage/src/assets/michele.jpg?raw=true" />
               <CategoryTitle>Outros</CategoryTitle>
               <ServiceList>
                 <ServiceItem>Maquiagens</ServiceItem>

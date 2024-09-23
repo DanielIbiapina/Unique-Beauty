@@ -10,6 +10,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { fetchInstagramPosts } from "../../instagramApi";
+import axios from "axios";
 import {
   AppContainer,
   Header,
@@ -61,36 +62,10 @@ export default function Home() {
   const [selectedServices, setSelectedServices] = useState([]);
   const whatsappNumber = "351938556873"; // Substitua pelo número real
   const sections = useRef({});
-  const teamMembers = [
-    {
-      name: "Janyce Ibiapina",
-      image: Janyce,
-      role: "Dona do Salão, Esteticista e especialista em tratamentos faciais",
-    },
-    {
-      name: "Joana Silva",
-      image: Joana,
-      role: "Manicure especialista em unhas de pé e mão",
-    },
-    {
-      name: "Carol Duarte",
-      image: Carol,
-      role: "Maquiadora profissional",
-    },
-    {
-      name: "Vanessa Silva",
-      image: Vanessa,
-      role: "Massagista terapêutico",
-    },
-
-    // Adicione mais membros da equipe conforme necessário
-  ];
-
   const scrollToSection = (sectionName) => {
     sections.current[sectionName]?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const [instagramPosts, setInstagramPosts] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
 
   useEffect(() => {
     const loadInstagramPosts = async () => {
@@ -98,7 +73,20 @@ export default function Home() {
       setInstagramPosts(posts);
     };
     loadInstagramPosts();
+
+    fetchTeamMembers();
   }, []);
+
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/professionals");
+      setTeamMembers(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar membros da equipe:", error);
+    }
+  };
+
+  const [instagramPosts, setInstagramPosts] = useState([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -268,8 +256,8 @@ export default function Home() {
           <SectionTitle>Nossa Equipe</SectionTitle>
           <TeamGrid>
             {teamMembers.map((member) => (
-              <TeamMemberCard key={member.name}>
-                <MemberImage src={member.image} alt={member.name} />
+              <TeamMemberCard key={member.id}>
+                <MemberImage src={member.imageUrl} alt={member.name} />
                 <MemberName>{member.name}</MemberName>
                 <MemberRole>{member.role}</MemberRole>
               </TeamMemberCard>
