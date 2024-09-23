@@ -1,98 +1,144 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaTrash, FaPlus } from "react-icons/fa";
 import {
   AdminContainer,
   AdminSection,
   SectionTitle,
-  ProfessionalList,
-  ProfessionalItem,
+  ProfessionalGrid,
+  ProfessionalCard,
+  ProfessionalImage,
+  ProfessionalName,
+  RemoveButton,
+  AddButton,
+  Modal,
+  ModalContent,
+  CloseButton,
   AddProfessionalForm,
   FormInput,
   SubmitButton,
-  DataSection,
-  DataItem,
+  ConfirmationModal,
+  ConfirmationButtons,
+  ConfirmButton,
+  CancelButton,
 } from "./styles";
 
 function AdminPage() {
   const [professionals, setProfessionals] = useState([]);
   const [newProfessional, setNewProfessional] = useState({
     name: "",
-    role: "",
+    imageUrl: "",
   });
-  const [data, setData] = useState({
-    monthlyRevenue: 0,
-    revenueByProfessional: {},
-    mostRequestedProduct: "",
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   useEffect(() => {
-    // Carregar dados iniciais, como profissionais e dados de faturamento
-    // Exemplo: setProfessionals([...]);
-    // Exemplo: setData({...});
+    fetchProfessionals();
   }, []);
+
+  const fetchProfessionals = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/professionals");
+      setProfessionals(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar profissionais:", error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProfessional((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddProfessional = (e) => {
+  const handleAddProfessional = async (e) => {
     e.preventDefault();
-    // Adicionar lógica para adicionar profissional
-    setProfessionals([...professionals, newProfessional]);
-    setNewProfessional({ name: "", role: "" });
+    try {
+      await axios.post("http://localhost:4000/professionals", newProfessional);
+      setNewProfessional({ name: "", imageUrl: "" });
+      fetchProfessionals();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Erro ao adicionar profissional:", error);
+    }
   };
 
-  const handleRemoveProfessional = (name) => {
-    // Adicionar lógica para remover profissional
-    setProfessionals(professionals.filter((prof) => prof.name !== name));
+  const handleRemoveProfessional = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4000/professionals/${id}`);
+      fetchProfessionals();
+      setConfirmDelete(null);
+    } catch (error) {
+      console.error("Erro ao remover profissional:", error);
+    }
   };
 
   return (
     <AdminContainer>
       <AdminSection>
         <SectionTitle>Gerenciar Profissionais</SectionTitle>
-        <ProfessionalList>
+        <ProfessionalGrid>
           {professionals.map((prof) => (
-            <ProfessionalItem key={prof.name}>
-              {prof.name} - {prof.role}
-              <button onClick={() => handleRemoveProfessional(prof.name)}>
-                Remover
-              </button>
-            </ProfessionalItem>
+            <ProfessionalCard key={prof.id}>
+              <ProfessionalImage src={prof.imageUrl} alt={prof.name} />
+              <ProfessionalName>{prof.name}</ProfessionalName>
+              <RemoveButton onClick={() => setConfirmDelete(prof)}>
+                <FaTrash />
+              </RemoveButton>
+            </ProfessionalCard>
           ))}
-        </ProfessionalList>
-        <AddProfessionalForm onSubmit={handleAddProfessional}>
-          <FormInput
-            type="text"
-            name="name"
-            placeholder="Nome do Profissional"
-            value={newProfessional.name}
-            onChange={handleInputChange}
-            required
-          />
-          <FormInput
-            type="text"
-            name="role"
-            placeholder="Função do Profissional"
-            value={newProfessional.role}
-            onChange={handleInputChange}
-            required
-          />
-          <SubmitButton type="submit">Adicionar Profissional</SubmitButton>
-        </AddProfessionalForm>
+          <AddButton onClick={() => setIsModalOpen(true)}>
+            <FaPlus />
+          </AddButton>
+        </ProfessionalGrid>
       </AdminSection>
 
-      <DataSection>
-        <SectionTitle>Dados Interessantes</SectionTitle>
-        <DataItem>Faturamento do Mês: {data.monthlyRevenue}</DataItem>
-        <DataItem>
-          Faturamento por Profissional:{" "}
-          {JSON.stringify(data.revenueByProfessional)}
-        </DataItem>
-        <DataItem>
-          Produto Mais Solicitado: {data.mostRequestedProduct}
-        </DataItem>
-      </DataSection>
+      {isModalOpen && (
+        <Modal>
+          <ModalContent>
+            <CloseButton onClick={() => setIsModalOpen(false)}>×</CloseButton>
+            <AddProfessionalForm onSubmit={handleAddProfessional}>
+              <FormInput
+                type="text"
+                name="name"
+                placeholder="Nome do Profissional"
+                value={newProfessional.name}
+                onChange={handleInputChange}
+                required
+              />
+              <FormInput
+                type="text"
+                name="imageUrl"
+                placeholder="URL da Imagem do Profissional"
+                value={newProfessional.imageUrl}
+                onChange={handleInputChange}
+                required
+              />
+              <SubmitButton type="submit">Adicionar Profissional</SubmitButton>
+            </AddProfessionalForm>
+          </ModalContent>
+        </Modal>
+      )}
+
+      {confirmDelete && (
+        <ConfirmationModal>
+          <ModalContent>
+            <p>
+              Tem certeza que deseja remover o profissional {confirmDelete.name}
+              ?
+            </p>
+            <ConfirmationButtons>
+              <ConfirmButton
+                onClick={() => handleRemoveProfessional(confirmDelete.id)}
+              >
+                Confirmar
+              </ConfirmButton>
+              <CancelButton onClick={() => setConfirmDelete(null)}>
+                Cancelar
+              </CancelButton>
+            </ConfirmationButtons>
+          </ModalContent>
+        </ConfirmationModal>
+      )}
     </AdminContainer>
   );
 }

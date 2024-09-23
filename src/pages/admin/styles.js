@@ -9,44 +9,155 @@ export const AdminSection = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
+  margin-bottom: 20px;
+  font-size: 24px;
+`;
+
+export const ProfessionalGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+`;
+
+export const ProfessionalCard = styled.div`
+  position: relative;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const ProfessionalImage = styled.img`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 10px;
 `;
 
-export const ProfessionalList = styled.ul`
-  list-style: none;
-  padding: 0;
+export const ProfessionalName = styled.p`
+  font-weight: bold;
+  margin-bottom: 5px;
 `;
 
-export const ProfessionalItem = styled.li`
-  margin-bottom: 5px;
+export const RemoveButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  color: #ff4136;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
+export const AddButton = styled.button`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  background-color: #0074d9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 24px;
+  cursor: pointer;
+  height: 100%;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
 `;
 
 export const AddProfessionalForm = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 10px;
 `;
 
 export const FormInput = styled.input`
-  margin-bottom: 10px;
   padding: 8px;
   font-size: 16px;
 `;
 
 export const SubmitButton = styled.button`
   padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
+  background-color: #0074d9;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 `;
 
-export const DataSection = styled.div`
+export const ConfirmationModal = styled(Modal)`
+  // Herda os estilos do Modal original
+`;
+
+export const ConfirmationButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
 `;
 
-export const DataItem = styled.p`
-  margin-bottom: 10px;
+export const ConfirmButton = styled.button`
+  padding: 10px 20px;
+  background-color: #ff4136;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #d0342b;
+  }
+`;
+
+export const CancelButton = styled.button`
+  padding: 10px 20px;
+  background-color: #aaaaaa;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #999999;
+  }
 `;
