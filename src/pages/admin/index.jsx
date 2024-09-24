@@ -57,11 +57,13 @@ function AdminPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [isMonthSelectorOpen, setIsMonthSelectorOpen] = useState(false);
   const [isDateSelectorOpen, setIsDateSelectorOpen] = useState(false);
+  const [popularServices, setPopularServices] = useState([]);
 
   useEffect(() => {
     fetchProfessionals();
     fetchMonthlyRevenue();
     fetchProfessionalRevenues();
+    fetchPopularServices(); // Nova chamada de função
   }, [selectedYear, selectedMonth]);
 
   const fetchProfessionals = async () => {
@@ -94,6 +96,18 @@ function AdminPage() {
       setProfessionalRevenues(response.data.faturamentoPorProfissional);
     } catch (error) {
       console.error("Erro ao buscar faturamento dos profissionais:", error);
+    }
+  };
+
+  const fetchPopularServices = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/services/most-popular/${selectedYear}/${selectedMonth}`
+      );
+
+      setPopularServices(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar serviços populares:", error);
     }
   };
 
@@ -213,6 +227,18 @@ function AdminPage() {
           </RevenueCard>
         ))}
       </RevenueSection>
+
+      <AdminSection>
+        <SectionTitle>Serviços Mais Populares</SectionTitle>
+        <ProfessionalGrid>
+          {popularServices.map((service) => (
+            <RevenueCard key={service.service}>
+              <RevenueTitle>{service.service}</RevenueTitle>
+              <RevenueAmount>{service.count} vezes</RevenueAmount>
+            </RevenueCard>
+          ))}
+        </ProfessionalGrid>
+      </AdminSection>
 
       <AdminSection>
         <SectionTitle>Gerenciar Profissionais</SectionTitle>
