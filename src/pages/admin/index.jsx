@@ -92,7 +92,7 @@ function AdminPage() {
       const response = await axios.get(
         `http://localhost:4000/appointments/${selectedYear}/${selectedMonth}/faturamento/profissional`
       );
-      console.log(response.data.faturamentoPorProfissional);
+
       setProfessionalRevenues(response.data.faturamentoPorProfissional);
     } catch (error) {
       console.error("Erro ao buscar faturamento dos profissionais:", error);

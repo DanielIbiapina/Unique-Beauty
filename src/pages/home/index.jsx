@@ -225,7 +225,7 @@ export default function Home() {
           </SectionContent>
         </Section>
 
-        {/*<Section ref={(el) => (sections.current["producoes"] = el)}>
+        <Section ref={(el) => (sections.current["producoes"] = el)}>
           <SectionTitle>Nossas Produções</SectionTitle>
           <InstagramGrid>
             {instagramPosts.map((post) => (
@@ -248,7 +248,7 @@ export default function Home() {
               </InstagramPost>
             ))}
           </InstagramGrid>
-        </Section>*/}
+        </Section>
 
         <ServicesSection ref={(el) => (sections.current["servicos"] = el)} />
 
