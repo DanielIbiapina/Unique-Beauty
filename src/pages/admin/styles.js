@@ -44,7 +44,7 @@ export const ProfessionalName = styled.p`
 export const RemoveButton = styled.button`
   position: absolute;
   top: 5px;
-  right: 5px;
+  left: 5px;
   background-color: transparent;
   border: none;
   color: #ff4136;
@@ -284,5 +284,34 @@ export const YearButton = styled.button`
 
   &:hover {
     color: #0074d9;
+  }
+`;
+
+export const ScheduleButton = styled(RemoveButton)`
+  background-color: #4caf50;
+  margin-left: 5px;
+  left: unset;
+  right: 5px;
+`;
+
+export const ScheduleTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
   }
 `;

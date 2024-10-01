@@ -6,6 +6,7 @@ import {
   FaCalendarAlt,
   FaChevronLeft,
   FaChevronRight,
+  FaCalendar,
 } from "react-icons/fa";
 import {
   AdminContainer,
@@ -40,6 +41,8 @@ import {
   DateDropdown,
   YearSelector,
   YearButton,
+  ScheduleButton,
+  ScheduleTable,
 } from "./styles";
 
 function AdminPage() {
@@ -58,6 +61,8 @@ function AdminPage() {
   const [isMonthSelectorOpen, setIsMonthSelectorOpen] = useState(false);
   const [isDateSelectorOpen, setIsDateSelectorOpen] = useState(false);
   const [popularServices, setPopularServices] = useState([]);
+  const [selectedProfessional, setSelectedProfessional] = useState(null);
+  const [professionalAppointments, setProfessionalAppointments] = useState([]);
 
   useEffect(() => {
     fetchProfessionals();
@@ -111,6 +116,18 @@ function AdminPage() {
     }
   };
 
+  const fetchProfessionalAppointments = async (professionalId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/appointments/professional/${professionalId}`
+      );
+      setProfessionalAppointments(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos do profissional:", error);
+    }
+  };
+
   const handleDateChange = (e) => {
     const [year, month] = e.target.value.split("-");
     setSelectedYear(parseInt(year));
@@ -142,6 +159,11 @@ function AdminPage() {
     } catch (error) {
       console.error("Erro ao remover profissional:", error);
     }
+  };
+
+  const handleShowAppointments = (professional) => {
+    setSelectedProfessional(professional);
+    fetchProfessionalAppointments(professional.id);
   };
 
   const monthNames = [
@@ -250,6 +272,9 @@ function AdminPage() {
               <RemoveButton onClick={() => setConfirmDelete(prof)}>
                 <FaTrash />
               </RemoveButton>
+              <ScheduleButton onClick={() => handleShowAppointments(prof)}>
+                <FaCalendar />
+              </ScheduleButton>
             </ProfessionalCard>
           ))}
           <AddButton onClick={() => setIsModalOpen(true)}>
@@ -257,6 +282,44 @@ function AdminPage() {
           </AddButton>
         </ProfessionalGrid>
       </AdminSection>
+
+      {selectedProfessional && (
+        <Modal>
+          <ModalContent>
+            <CloseButton onClick={() => setSelectedProfessional(null)}>
+              ×
+            </CloseButton>
+            <h2>Agendamentos de {selectedProfessional.name}</h2>
+            <ScheduleTable>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Hora</th>
+                  <th>Cliente</th>
+                  <th>Serviço</th>
+                </tr>
+              </thead>
+              <tbody>
+                {professionalAppointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td>
+                      {new Date(appointment.dateTime).toLocaleDateString()}
+                    </td>
+                    <td>
+                      {new Date(appointment.dateTime).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td>{appointment.client.name}</td>
+                    <td>{appointment.serviceName}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </ScheduleTable>
+          </ModalContent>
+        </Modal>
+      )}
 
       {isModalOpen && (
         <Modal>

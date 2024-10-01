@@ -179,20 +179,52 @@ const ServicesSection = forwardRef((props, ref) => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/appointments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(appointmentData),
-      });
+      // Criar o agendamento
+      const appointmentResponse = await fetch(
+        "http://localhost:4000/appointments",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(appointmentData),
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!appointmentResponse.ok) {
+        throw new Error(`HTTP error! status: ${appointmentResponse.status}`);
       }
 
-      const result = await response.json();
-      console.log("Agendamento confirmado:", result);
+      const appointmentResult = await appointmentResponse.json();
+      console.log("Agendamento confirmado:", appointmentResult);
+
+      // Atualizar a disponibilidade do horário para cada profissional
+      for (const service of appointmentData.services) {
+        if (service.professionalId) {
+          const scheduleUpdateResponse = await fetch(
+            `http://localhost:4000/schedule/${service.professionalId}/${selectedDate}/${selectedTime}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ available: false }),
+            }
+          );
+
+          if (!scheduleUpdateResponse.ok) {
+            throw new Error(
+              `HTTP error! status: ${scheduleUpdateResponse.status}`
+            );
+          }
+
+          const scheduleUpdateResult = await scheduleUpdateResponse.json();
+          console.log(
+            "Horário atualizado para indisponível:",
+            scheduleUpdateResult
+          );
+        }
+      }
 
       // Resetar o estado após o agendamento bem-sucedido
       setShowSummary(false);
@@ -200,6 +232,8 @@ const ServicesSection = forwardRef((props, ref) => {
       setSelectedProfessionals({});
       setSelectedDate("");
       setSelectedTime("");
+
+      alert("Agendamento confirmado com sucesso!");
     } catch (error) {
       console.error("Erro ao confirmar o agendamento:", error);
       alert(
