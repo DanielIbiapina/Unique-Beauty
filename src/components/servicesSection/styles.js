@@ -366,3 +366,21 @@ export const SelectionLabel = styled.h4`
   margin: 1rem 0 0.5rem;
   font-weight: 600;
 `;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+`;
+
+export const Form = styled.form`
+  margin-top: 1rem;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ff69b4;
+  border-radius: 4px;
+`;
