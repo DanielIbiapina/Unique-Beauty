@@ -200,8 +200,12 @@ export const DatePicker = styled.input`
   background-color: white;
 `;
 
-export const SummaryPage = styled(ProfessionalSelectionPage)`
+export const SummaryContainer = styled(ProfessionalSelectionPage)`
   // Herda os estilos de ProfessionalSelectionPage
+`;
+
+export const SummaryList = styled.div`
+  // Não precisamos de estilos específicos aqui, já que cada item terá seu próprio estilo
 `;
 
 export const SummaryItem = styled.div`
@@ -212,6 +216,15 @@ export const SummaryItem = styled.div`
   border-radius: 8px;
   border: 1px solid #ff69b4;
 
+  h3 {
+    margin-top: 0;
+    color: #ff69b4;
+  }
+
+  p {
+    margin: 8px 0;
+  }
+
   ul {
     margin-top: 10px;
     padding-left: 20px;
@@ -220,6 +233,13 @@ export const SummaryItem = styled.div`
   li {
     margin: 8px 0;
   }
+`;
+
+export const TotalPrice = styled.p`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: left;
 `;
 
 export const DetailedServiceSelectionPage = styled(ProfessionalSelectionPage)`
@@ -279,12 +299,18 @@ export const TimeItem = styled(DetailedServiceItem)`
 export const DateList = styled.ul`
   list-style-type: none;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
+  width: 100%;
 `;
 
-export const DateItem = styled(DetailedServiceItem)``;
+export const DateItem = styled(DetailedServiceItem)`
+  // Mantenha os estilos existentes, mas adicione:
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+`;
 
 export const ServiceName = styled.span`
   flex: 1;
@@ -309,3 +335,16 @@ export const ServicePrice = styled.span`
   color: white;
   font-size: 0.8rem;
 `;*/
+
+export const ShowMoreButton = styled.button`
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+export const SummaryTitle = styled(CategoryTitle)``;
