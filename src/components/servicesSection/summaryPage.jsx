@@ -56,7 +56,9 @@ const SummaryPage = ({
           </SummaryItem>
         );
       })}
-      <TotalPrice>Preço Total: R$ {getTotalPrice().toFixed(2)}</TotalPrice>
+      <TotalPrice>
+        Preço Total: <span>R$ {getTotalPrice().toFixed(2)}</span>
+      </TotalPrice>
       <ConfirmButton onClick={onConfirm}>Confirmar Agendamento</ConfirmButton>
     </SummaryContainer>
   );

@@ -20,11 +20,11 @@ const DetailedServiceSelection = ({
   selectedServices,
   handleDetailedServiceSelection,
   handleConfirmDetailedSelection,
-  setShowDetailedServiceSelection,
+  onBack,
 }) => {
   return (
     <DetailedServiceSelectionPage>
-      <BackButton onClick={() => setShowDetailedServiceSelection(false)}>
+      <BackButton onClick={onBack}>
         <FaArrowLeft /> Voltar
       </BackButton>
       <SectionTitle>Selecione os Serviços</SectionTitle>

@@ -11,6 +11,7 @@ import {
   ProfessionalImage,
   ProfessionalInfo,
   ProfessionalName,
+  CategoryTitle,
 } from "./styles"; // Certifique-se de criar estes estilos
 import { SectionTitle } from "../../pages/home/styles";
 
@@ -48,7 +49,7 @@ const ProfessionalSelection = ({
 
         return (
           <div key={serviceId}>
-            <h3>{service.name}</h3>
+            <CategoryTitle>{service.name}</CategoryTitle>
             <ProfessionalList>
               {professionals.map((professional) => (
                 <ProfessionalItem

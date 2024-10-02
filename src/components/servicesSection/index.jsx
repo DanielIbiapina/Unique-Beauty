@@ -16,6 +16,7 @@ import {
   BackButton,
   ConfirmButton,
   ShowMoreButton,
+  SelectionLabel,
 } from "./styles";
 import { Section, SectionTitle } from "../../pages/home/styles";
 import DetailedServiceSelection from "./detailedServiceSelection";
@@ -37,6 +38,7 @@ const ServicesSection = forwardRef((props, ref) => {
   const [professionals, setProfessionals] = useState([]);
   const [availabilityByService, setAvailabilityByService] = useState({});
   const [visibleDays, setVisibleDays] = useState(7);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     fetchServices();
@@ -44,15 +46,10 @@ const ServicesSection = forwardRef((props, ref) => {
   }, []);
 
   useEffect(() => {
-    if (showDateTimeSelection) {
+    if (currentStep === 3) {
       fetchAvailability();
     }
-  }, [
-    showDateTimeSelection,
-    selectedServices,
-    selectedProfessionals,
-    visibleDays,
-  ]);
+  }, [currentStep, selectedServices, selectedProfessionals, visibleDays]);
 
   const fetchServices = async () => {
     try {
@@ -61,7 +58,6 @@ const ServicesSection = forwardRef((props, ref) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
       setGroupedServices(data);
-      console.log(data);
     } catch (error) {
       console.error("Erro ao buscar serviços agrupados:", error);
     }
@@ -91,6 +87,7 @@ const ServicesSection = forwardRef((props, ref) => {
           if (!response.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
           const scheduleSlots = await response.json();
+
           return { serviceId, scheduleSlots };
         } catch (error) {
           console.error(
@@ -197,7 +194,7 @@ const ServicesSection = forwardRef((props, ref) => {
           </ServiceList>
         </ServiceCategory>
       </ServiceCategories>
-      <ScheduleButton onClick={() => setShowDetailedServiceSelection(true)}>
+      <ScheduleButton onClick={() => setCurrentStep(1)}>
         Ver Todos os Serviços e Agendar
       </ScheduleButton>
     </>
@@ -205,7 +202,7 @@ const ServicesSection = forwardRef((props, ref) => {
 
   const renderDateTimeSelection = () => (
     <DateTimeSelectionPage>
-      <BackButton onClick={() => setShowProfessionalSelection(true)}>
+      <BackButton onClick={handleBack}>
         <FaArrowLeft /> Voltar
       </BackButton>
       <SectionTitle>Escolha a Data e Horário</SectionTitle>
@@ -221,12 +218,13 @@ const ServicesSection = forwardRef((props, ref) => {
 
         return (
           <div key={serviceId}>
-            <h3>
+            <CategoryTitle>
               {service.name} com{" "}
               {professional ? professional.name : "Sem Preferência"}
-            </h3>
+            </CategoryTitle>
             {availability.length > 0 ? (
               <>
+                <SelectionLabel>Selecione o dia:</SelectionLabel>
                 <DateList>
                   {nextDays.map((date) => (
                     <DateItem
@@ -248,6 +246,7 @@ const ServicesSection = forwardRef((props, ref) => {
                 )}
                 {selectedDates[serviceId] && (
                   <>
+                    <SelectionLabel>Selecione o horário:</SelectionLabel>
                     <TimeList>
                       {availability
                         .filter((slot) =>
@@ -283,7 +282,7 @@ const ServicesSection = forwardRef((props, ref) => {
         );
       })}
       <ConfirmButton
-        onClick={() => setShowSummary(true)}
+        onClick={() => setCurrentStep(4)}
         disabled={
           !Object.keys(selectedDates).length ||
           !Object.keys(selectedTimes).length
@@ -321,7 +320,6 @@ const ServicesSection = forwardRef((props, ref) => {
       }),
     };
 
-    console.log(appointmentData);
     try {
       // Criar o agendamento
       const appointmentResponse = await fetch(
@@ -388,54 +386,57 @@ const ServicesSection = forwardRef((props, ref) => {
     }
   };
 
-  return (
-    <Section ref={ref}>
-      {!showDetailedServiceSelection &&
-        !showProfessionalSelection &&
-        !showDateTimeSelection &&
-        !showSummary &&
-        renderInitialView()}
-      {showDetailedServiceSelection && (
-        <DetailedServiceSelection
-          groupedServices={groupedServices}
-          selectedServices={selectedServices}
-          handleDetailedServiceSelection={handleDetailedServiceSelection}
-          handleConfirmDetailedSelection={() => {
-            setShowDetailedServiceSelection(false);
-            setShowProfessionalSelection(true);
-          }}
-          setShowDetailedServiceSelection={setShowDetailedServiceSelection}
-        />
-      )}
-      {showProfessionalSelection && (
-        <ProfessionalSelection
-          selectedServices={selectedServices}
-          groupedServices={groupedServices}
-          professionals={professionals}
-          selectedProfessionals={selectedProfessionals}
-          setSelectedProfessionals={setSelectedProfessionals}
-          onConfirm={() => {
-            setShowProfessionalSelection(false);
-            setShowDateTimeSelection(true);
-          }}
-          onBack={() => setShowDetailedServiceSelection(true)}
-        />
-      )}
-      {showDateTimeSelection && renderDateTimeSelection()}
-      {showSummary && (
-        <SummaryPage
-          selectedServices={selectedServices}
-          groupedServices={groupedServices}
-          selectedProfessionals={selectedProfessionals}
-          professionals={professionals}
-          selectedDates={selectedDates}
-          selectedTimes={selectedTimes}
-          onConfirm={handleFinalConfirmation}
-          onBack={() => setShowDateTimeSelection(true)}
-        />
-      )}
-    </Section>
-  );
+  const handleBack = () => {
+    setCurrentStep((prevStep) => Math.max(0, prevStep - 1));
+  };
+
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 0:
+        return renderInitialView();
+      case 1:
+        return (
+          <DetailedServiceSelection
+            groupedServices={groupedServices}
+            selectedServices={selectedServices}
+            handleDetailedServiceSelection={handleDetailedServiceSelection}
+            handleConfirmDetailedSelection={() => setCurrentStep(2)}
+            onBack={handleBack}
+          />
+        );
+      case 2:
+        return (
+          <ProfessionalSelection
+            selectedServices={selectedServices}
+            groupedServices={groupedServices}
+            professionals={professionals}
+            selectedProfessionals={selectedProfessionals}
+            setSelectedProfessionals={setSelectedProfessionals}
+            onConfirm={() => setCurrentStep(3)}
+            onBack={handleBack}
+          />
+        );
+      case 3:
+        return renderDateTimeSelection();
+      case 4:
+        return (
+          <SummaryPage
+            selectedServices={selectedServices}
+            groupedServices={groupedServices}
+            selectedProfessionals={selectedProfessionals}
+            professionals={professionals}
+            selectedDates={selectedDates}
+            selectedTimes={selectedTimes}
+            onConfirm={handleFinalConfirmation}
+            onBack={handleBack}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return <Section ref={ref}>{renderCurrentStep()}</Section>;
 });
 
 export default ServicesSection;

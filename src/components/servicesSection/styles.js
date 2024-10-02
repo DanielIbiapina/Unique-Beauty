@@ -235,11 +235,22 @@ export const SummaryItem = styled.div`
   }
 `;
 
-export const TotalPrice = styled.p`
+export const TotalPrice = styled.div`
   font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  text-align: left;
+  color: #333;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background-color: #f8f8f8;
+  border: 1px solid #ff69b4; // Borda rosa
+  border-radius: 8px;
+  display: flex;
+  justify-content: flex-start; // Alinha o conteúdo à esquerda
+  align-items: center;
+
+  span {
+    font-weight: bold;
+    margin-left: 0.5rem;
+  }
 `;
 
 export const DetailedServiceSelectionPage = styled(ProfessionalSelectionPage)`
@@ -348,3 +359,10 @@ export const ShowMoreButton = styled.button`
   }
 `;
 export const SummaryTitle = styled(CategoryTitle)``;
+
+export const SelectionLabel = styled.h4`
+  font-size: 1rem;
+  color: #333;
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+`;
