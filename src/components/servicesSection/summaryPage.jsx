@@ -11,6 +11,13 @@ import {
   Input,
   Form,
   ErrorMessage,
+  OrText,
+  VerificationContainer,
+  VerificationTitle,
+  VerificationForm,
+  InputGroup,
+  StyledInput,
+  ActionButton,
 } from "./styles";
 
 const SummaryPage = ({
@@ -85,63 +92,116 @@ const SummaryPage = ({
 
   const renderClientVerification = () => (
     <>
-      <Form onSubmit={handlePhoneSubmit}>
-        <Input
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          placeholder="Seu número de telefone"
-          required
-        />
-        <ConfirmButton type="submit">Verificar</ConfirmButton>
-      </Form>
-      <p>ou</p>
-      <ConfirmButton onClick={() => setStep("cadastro")}>
-        Não tenho cadastro
-      </ConfirmButton>
+      <SummaryTitle>Área da Cliente</SummaryTitle>
+      <VerificationContainer>
+        <VerificationTitle>Você já tem cadastro?</VerificationTitle>
+        <VerificationForm onSubmit={handlePhoneSubmit}>
+          <StyledInput
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="Seu número de telefone"
+            required
+          />
+          <ActionButton
+            type="submit"
+            primary
+            style={{ width: "100%", marginTop: "10px" }}
+          >
+            Verificar cadastro
+          </ActionButton>
+        </VerificationForm>
+        <OrText>ou</OrText>
+        <ActionButton
+          onClick={() => setStep("cadastro")}
+          style={{ width: "100%" }}
+        >
+          Não tenho cadastro
+        </ActionButton>
+      </VerificationContainer>
     </>
   );
 
   const renderClientConfirmation = () => (
-    <div>
-      <p>Você é {clientInfo}?</p>
-      <ConfirmButton onClick={() => setStep("agendamento")}>Sim</ConfirmButton>
-      <BackButton onClick={() => setStep("verificacao")}>Não</BackButton>
-    </div>
+    <VerificationContainer>
+      <VerificationTitle>Confirmação de Identidade</VerificationTitle>
+      <SummaryItem>
+        <p>Olá, você é a {clientInfo}?</p>
+      </SummaryItem>
+
+      <ActionButton
+        onClick={() => setStep("agendamento")}
+        primary
+        style={{ width: "100%", marginBottom: "10px" }}
+      >
+        Sim, sou eu
+      </ActionButton>
+      <ActionButton
+        onClick={() => setStep("verificacao")}
+        style={{ width: "100%" }}
+      >
+        Não, não sou eu
+      </ActionButton>
+    </VerificationContainer>
   );
 
   const renderQuickRegistration = () => (
-    <Form onSubmit={handleQuickRegistration}>
-      <Input
-        type="text"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        placeholder="Nome completo"
-        required
-      />
-      <Input
-        type="tel"
-        value={formData.phone}
-        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-        placeholder="Telefone"
-        required
-      />
-      <Input
-        type="email"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        placeholder="E-mail"
-        required
-      />
-      <Input
-        type="text"
-        value={formData.address}
-        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-        placeholder="Endereço"
-        required
-      />
-      <ConfirmButton type="submit">Cadastrar</ConfirmButton>
-    </Form>
+    <>
+      <SummaryTitle>Área da Cliente</SummaryTitle>
+      <VerificationContainer>
+        <VerificationTitle>Cadastro Rápido</VerificationTitle>
+        <VerificationForm onSubmit={handleQuickRegistration}>
+          <StyledInput
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="Nome"
+            required
+          />
+          <StyledInput
+            type="tel"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+            placeholder="Telefone"
+            required
+          />
+          <StyledInput
+            type="email"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            placeholder="E-mail"
+            required
+          />
+          <StyledInput
+            type="text"
+            value={formData.address}
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
+            placeholder="Endereço"
+            required
+          />
+          <ActionButton
+            type="submit"
+            primary
+            style={{ width: "100%", marginTop: "10px" }}
+          >
+            Cadastrar
+          </ActionButton>
+        </VerificationForm>
+        <OrText>ou</OrText>
+        <ActionButton
+          onClick={() => setStep("verificacao")}
+          style={{ width: "100%" }}
+        >
+          Já tenho cadastro
+        </ActionButton>
+      </VerificationContainer>
+    </>
   );
 
   return (
@@ -174,23 +234,13 @@ const SummaryPage = ({
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      {step === "verificacao" && (
-        <>
-          <p>Já tem cadastro? Coloque o seu número de telefone aqui:</p>
-          {renderClientVerification()}
-        </>
-      )}
+      {step === "verificacao" && renderClientVerification()}
       {step === "confirmacao" && renderClientConfirmation()}
-      {step === "cadastro" && (
-        <>
-          <p>Preencha seus dados para um cadastro rápido:</p>
-          {renderQuickRegistration()}
-        </>
-      )}
+      {step === "cadastro" && renderQuickRegistration()}
       {step === "agendamento" && (
-        <ConfirmButton onClick={handleConfirm}>
+        <ActionButton onClick={handleConfirm} primary style={{ width: "100%" }}>
           Confirmar Agendamento
-        </ConfirmButton>
+        </ActionButton>
       )}
     </SummaryContainer>
   );

@@ -367,20 +367,83 @@ export const SelectionLabel = styled.h4`
   font-weight: 600;
 `;
 
-export const ErrorMessage = styled.p`
-  color: red;
-  font-weight: bold;
-  margin-top: 1rem;
-`;
-
 export const Form = styled.form`
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
 `;
 
 export const Input = styled.input`
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ff69b4;
+  padding: 12px;
+  border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+`;
+
+export const ErrorMessage = styled.p`
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 10px;
+`;
+
+// Novo componente para o texto "ou"
+export const OrText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  color: #6c757d;
+  margin: 15px 0;
+`;
+
+export const VerificationContainer = styled(SummaryItem)``;
+
+export const VerificationTitle = styled.h3``;
+
+export const VerificationForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const InputGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const StyledInput = styled.input`
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+`;
+
+export const ActionButton = styled.button`
+  background-color: ${(props) => (props.primary ? "#ff69b4" : "#ff69b4")};
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => (props.primary ? "#ff1493" : "#ff1493")};
+  }
 `;
