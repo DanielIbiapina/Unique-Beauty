@@ -61,6 +61,7 @@ const SummaryPage = ({
         `http://localhost:4000/clients/${phoneNumber}`
       );
       if (response.data) {
+        console.log(response.data);
         setClientInfo(response.data);
         setStep("confirmacao");
       } else {
@@ -126,7 +127,7 @@ const SummaryPage = ({
     <VerificationContainer>
       <VerificationTitle>Confirmação de Identidade</VerificationTitle>
       <SummaryItem>
-        <p>Olá, você é a {clientInfo}?</p>
+        <p>Olá, você é a {clientInfo.name}?</p>
       </SummaryItem>
 
       <ActionButton

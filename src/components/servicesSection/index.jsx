@@ -303,10 +303,10 @@ const ServicesSection = forwardRef((props, ref) => {
     });
   };
 
-  const handleFinalConfirmation = async () => {
+  const handleFinalConfirmation = async (clientInfo) => {
     const appointmentData = {
       status: "confirmado",
-      clientId: 1, // Assumindo que o ID do cliente é 1. Ajuste conforme necessário.
+      clientId: clientInfo.id,
       services: selectedServices.map((serviceId) => {
         const service = Object.values(groupedServices)
           .flat()
@@ -427,7 +427,7 @@ const ServicesSection = forwardRef((props, ref) => {
             professionals={professionals}
             selectedDates={selectedDates}
             selectedTimes={selectedTimes}
-            onConfirm={handleFinalConfirmation}
+            onConfirm={(clientInfo) => handleFinalConfirmation(clientInfo)}
             onBack={handleBack}
           />
         );

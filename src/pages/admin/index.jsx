@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   FaTrash,
   FaPlus,
@@ -7,6 +8,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaCalendar,
+  FaUserPlus,
 } from "react-icons/fa";
 import {
   AdminContainer,
@@ -46,6 +48,9 @@ import {
 } from "./styles";
 
 function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
   const [professionals, setProfessionals] = useState([]);
   const [newProfessional, setNewProfessional] = useState({
     name: "",
@@ -63,12 +68,55 @@ function AdminPage() {
   const [popularServices, setPopularServices] = useState([]);
   const [selectedProfessional, setSelectedProfessional] = useState(null);
   const [professionalAppointments, setProfessionalAppointments] = useState([]);
+  const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    username: "",
+    password: "",
+    role: "FUNCIONARIO",
+  });
 
   useEffect(() => {
-    fetchProfessionals();
-    fetchMonthlyRevenue();
-    fetchPopularServices();
-  }, [selectedYear, selectedMonth]);
+    checkAuthentication();
+  }, []);
+
+  useEffect(() => {
+    if (
+      isAuthenticated &&
+      (userRole === "ADMIN" || userRole === "FUNCIONARIO")
+    ) {
+      fetchProfessionals();
+      fetchMonthlyRevenue();
+      fetchPopularServices();
+    }
+  }, [isAuthenticated, userRole, selectedYear, selectedMonth]);
+
+  const checkAuthentication = () => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (!token || !role) {
+      navigate("/login");
+      return;
+    }
+
+    if (role !== "ADMIN" && role !== "FUNCIONARIO") {
+      navigate("/"); // Redireciona para a página inicial se não for admin ou funcionário
+      return;
+    }
+
+    setIsAuthenticated(true);
+    setUserRole(role);
+  };
+
+  if (
+    !isAuthenticated ||
+    (userRole !== "ADMIN" && userRole !== "FUNCIONARIO")
+  ) {
+    return null;
+  }
+
+  // Função para verificar se o usuário tem permissão para realizar ações específicas
+  const canPerformAdminAction = () => userRole === "ADMIN";
 
   const fetchProfessionals = async () => {
     try {
@@ -81,14 +129,26 @@ function AdminPage() {
 
   const fetchMonthlyRevenue = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:4000/appointments/${selectedYear}/${selectedMonth}/faturamento`
+        `http://localhost:4000/admin/appointments/${selectedYear}/${selectedMonth}/faturamento`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setMonthlyRevenue(response.data.faturamentoTotal);
       setProfessionalRevenues(response.data.faturamentoPorProfissional);
     } catch (error) {
       console.error("Erro ao buscar faturamento mensal:", error);
+      if (error.response && error.response.status === 401) {
+        // Token expirado ou inválido
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        navigate("/login");
+      }
     }
   };
 
@@ -182,6 +242,35 @@ function AdminPage() {
     setIsDateSelectorOpen(false);
   };
 
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:4000/users/create",
+        newUser,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Usuário criado:", response.data);
+      setIsCreateUserModalOpen(false);
+      setNewUser({ username: "", password: "", role: "FUNCIONARIO" });
+
+      // Adicione aqui qualquer lógica adicional após a criação bem-sucedida
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      // Adicione aqui tratamento de erro adequado
+    }
+  };
+
+  const handleUserInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <AdminContainer>
       <RevenueSection>
@@ -257,17 +346,21 @@ function AdminPage() {
             <ProfessionalCard key={prof.id}>
               <ProfessionalImage src={prof.imageUrl} alt={prof.name} />
               <ProfessionalName>{prof.name}</ProfessionalName>
-              <RemoveButton onClick={() => setConfirmDelete(prof)}>
-                <FaTrash />
-              </RemoveButton>
+              {canPerformAdminAction() && (
+                <RemoveButton onClick={() => setConfirmDelete(prof)}>
+                  <FaTrash />
+                </RemoveButton>
+              )}
               <ScheduleButton onClick={() => handleShowAppointments(prof)}>
                 <FaCalendar />
               </ScheduleButton>
             </ProfessionalCard>
           ))}
-          <AddButton onClick={() => setIsModalOpen(true)}>
-            <FaPlus />
-          </AddButton>
+          {canPerformAdminAction() && (
+            <AddButton onClick={() => setIsModalOpen(true)}>
+              <FaPlus />
+            </AddButton>
+          )}
         </ProfessionalGrid>
       </AdminSection>
 
@@ -363,6 +456,54 @@ function AdminPage() {
             </ConfirmationButtons>
           </ModalContent>
         </ConfirmationModal>
+      )}
+
+      {canPerformAdminAction() && (
+        <AdminSection>
+          <SectionTitle>Gerenciar Usuários</SectionTitle>
+          <AddButton onClick={() => setIsCreateUserModalOpen(true)}>
+            <FaUserPlus /> Criar Novo Usuário
+          </AddButton>
+        </AdminSection>
+      )}
+
+      {isCreateUserModalOpen && canPerformAdminAction() && (
+        <Modal>
+          <ModalContent>
+            <CloseButton onClick={() => setIsCreateUserModalOpen(false)}>
+              ×
+            </CloseButton>
+            <h2>Criar Novo Usuário</h2>
+            <AddProfessionalForm onSubmit={handleCreateUser}>
+              <FormInput
+                type="text"
+                name="username"
+                placeholder="Nome de usuário"
+                value={newUser.username}
+                onChange={handleUserInputChange}
+                required
+              />
+              <FormInput
+                type="password"
+                name="password"
+                placeholder="Senha"
+                value={newUser.password}
+                onChange={handleUserInputChange}
+                required
+              />
+              <select
+                name="role"
+                value={newUser.role}
+                onChange={handleUserInputChange}
+                required
+              >
+                <option value="FUNCIONARIO">Funcionário</option>
+                <option value="ADMIN">Administrador</option>
+              </select>
+              <SubmitButton type="submit">Criar Usuário</SubmitButton>
+            </AddProfessionalForm>
+          </ModalContent>
+        </Modal>
       )}
     </AdminContainer>
   );
