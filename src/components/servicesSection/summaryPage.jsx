@@ -58,7 +58,7 @@ const SummaryPage = ({
     e.preventDefault();
     try {
       const response = await axios.get(
-        `http://localhost:4000/clients/${phoneNumber}`
+        `process.env.REACT_APP_API_URL/clients/${phoneNumber}`
       );
       if (response.data) {
         console.log(response.data);
@@ -77,7 +77,7 @@ const SummaryPage = ({
     try {
       console.log(formData);
       const response = await axios.post(
-        "http://localhost:4000/clients",
+        "process.env.REACT_APP_API_URL/clients",
         formData
       );
       setClientInfo(response.data);

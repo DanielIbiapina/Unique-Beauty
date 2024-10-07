@@ -53,7 +53,9 @@ const ServicesSection = forwardRef((props, ref) => {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch("http://localhost:4000/services/grouped");
+      const response = await fetch(
+        "process.env.REACT_APP_API_URL/services/grouped"
+      );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
@@ -65,7 +67,9 @@ const ServicesSection = forwardRef((props, ref) => {
 
   const fetchProfessionals = async () => {
     try {
-      const response = await fetch("http://localhost:4000/professionals");
+      const response = await fetch(
+        "process.env.REACT_APP_API_URL/professionals"
+      );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
@@ -82,7 +86,7 @@ const ServicesSection = forwardRef((props, ref) => {
       if (professionalId) {
         try {
           const response = await fetch(
-            `http://localhost:4000/schedule/filtered/${professionalId}/${startDate}/${visibleDays}`
+            `process.env.REACT_APP_API_URL/schedule/filtered/${professionalId}/${startDate}/${visibleDays}`
           );
           if (!response.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -323,7 +327,7 @@ const ServicesSection = forwardRef((props, ref) => {
     try {
       // Criar o agendamento
       const appointmentResponse = await fetch(
-        "http://localhost:4000/appointments",
+        "process.env.REACT_APP_API_URL/appointments",
         {
           method: "POST",
           headers: {
@@ -344,7 +348,7 @@ const ServicesSection = forwardRef((props, ref) => {
       for (const service of appointmentData.services) {
         if (service.professionalId) {
           const scheduleUpdateResponse = await fetch(
-            `http://localhost:4000/schedule/${service.professionalId}/${
+            `process.env.REACT_APP_API_URL/schedule/${service.professionalId}/${
               selectedDates[service.serviceId]
             }/${selectedTimes[service.serviceId]}`,
             {
