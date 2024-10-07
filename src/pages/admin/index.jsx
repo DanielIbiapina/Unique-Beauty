@@ -121,7 +121,7 @@ function AdminPage() {
   const fetchProfessionals = async () => {
     try {
       const response = await axios.get(
-        "process.env.REACT_APP_API_URL/professionals"
+        "${process.env.REACT_APP_API_URL}/professionals"
       );
       setProfessionals(response.data);
     } catch (error) {
@@ -133,7 +133,7 @@ function AdminPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `process.env.REACT_APP_API_URL/admin/appointments/${selectedYear}/${selectedMonth}/faturamento`,
+        `${process.env.REACT_APP_API_URL}/admin/appointments/${selectedYear}/${selectedMonth}/faturamento`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -157,7 +157,7 @@ function AdminPage() {
   const fetchPopularServices = async () => {
     try {
       const response = await axios.get(
-        `process.env.REACT_APP_API_URL/services/most-popular/${selectedYear}/${selectedMonth}`
+        `${process.env.REACT_APP_API_URL}/services/most-popular/${selectedYear}/${selectedMonth}`
       );
 
       setPopularServices(response.data);
@@ -169,7 +169,7 @@ function AdminPage() {
   const fetchProfessionalAppointments = async (professionalId) => {
     try {
       const response = await axios.get(
-        `process.env.REACT_APP_API_URL/appointments/professional/${professionalId}`
+        `${process.env.REACT_APP_API_URL}/appointments/professional/${professionalId}`
       );
       setProfessionalAppointments(response.data);
       console.log(response.data);
@@ -193,7 +193,7 @@ function AdminPage() {
     e.preventDefault();
     try {
       await axios.post(
-        "process.env.REACT_APP_API_URL/professionals",
+        "${process.env.REACT_APP_API_URL}/professionals",
         newProfessional
       );
       setNewProfessional({ name: "", imageUrl: "", role: "" });
@@ -206,7 +206,9 @@ function AdminPage() {
 
   const handleRemoveProfessional = async (id) => {
     try {
-      await axios.delete(`process.env.REACT_APP_API_URL/professionals/${id}`);
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/professionals/${id}`
+      );
       fetchProfessionals();
       setConfirmDelete(null);
     } catch (error) {
@@ -252,7 +254,7 @@ function AdminPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "process.env.REACT_APP_API_URL/users/create",
+        "${process.env.REACT_APP_API_URL}/users/create",
         newUser,
         {
           headers: {
