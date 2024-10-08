@@ -54,7 +54,7 @@ const ServicesSection = forwardRef((props, ref) => {
   const fetchServices = async () => {
     try {
       const response = await fetch(
-        "${process.env.REACT_APP_API_URL}/services/grouped"
+        `${process.env.REACT_APP_API_URL}/services/grouped`
       );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,7 +68,7 @@ const ServicesSection = forwardRef((props, ref) => {
   const fetchProfessionals = async () => {
     try {
       const response = await fetch(
-        "${process.env.REACT_APP_API_URL}/professionals"
+        `${process.env.REACT_APP_API_URL}/professionals`
       );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -327,7 +327,7 @@ const ServicesSection = forwardRef((props, ref) => {
     try {
       // Criar o agendamento
       const appointmentResponse = await fetch(
-        "${process.env.REACT_APP_API_URL}/appointments",
+        `${process.env.REACT_APP_API_URL}/appointments`,
         {
           method: "POST",
           headers: {

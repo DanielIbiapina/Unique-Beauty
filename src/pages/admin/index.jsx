@@ -121,7 +121,7 @@ function AdminPage() {
   const fetchProfessionals = async () => {
     try {
       const response = await axios.get(
-        "${process.env.REACT_APP_API_URL}/professionals"
+        `${process.env.REACT_APP_API_URL}/professionals`
       );
       setProfessionals(response.data);
     } catch (error) {
@@ -193,7 +193,7 @@ function AdminPage() {
     e.preventDefault();
     try {
       await axios.post(
-        "${process.env.REACT_APP_API_URL}/professionals",
+        `${process.env.REACT_APP_API_URL}/professionals`,
         newProfessional
       );
       setNewProfessional({ name: "", imageUrl: "", role: "" });
@@ -254,7 +254,7 @@ function AdminPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "${process.env.REACT_APP_API_URL}/users/create",
+        `${process.env.REACT_APP_API_URL}/users/create`,
         newUser,
         {
           headers: {
