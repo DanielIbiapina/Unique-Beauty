@@ -142,17 +142,25 @@ const ServicesSection = forwardRef((props, ref) => {
 
   const getNextNDays = (n) => {
     const today = new Date();
+    const portugalOffset = 1; // Offset para o fuso horário de Portugal (UTC+1)
+
     return Array.from({ length: n }, (_, i) => {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
+      date.setHours(date.getHours() + portugalOffset);
       return date.toISOString().split("T")[0];
     });
   };
 
   const formatDate = (date) => {
-    const options = { weekday: "short", day: "2-digit", month: "short" };
+    const options = {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      timeZone: "Europe/Lisbon",
+    };
     return new Date(date)
-      .toLocaleDateString("pt-BR", options)
+      .toLocaleDateString("pt-PT", options)
       .replace(".", "") // Remove o ponto após a abreviação do dia
       .replace(/(\d+)/, (match) => match.padStart(2, "0")); // Garante que o dia tenha sempre 2 dígitos
   };
