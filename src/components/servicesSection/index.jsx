@@ -1,5 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   ServiceCategories,
   ServiceCategory,
@@ -137,7 +139,7 @@ const ServicesSection = forwardRef((props, ref) => {
   };
 
   const handleShowMoreDays = () => {
-    setVisibleDays((prevVisibleDays) => prevVisibleDays + 7);
+    setVisibleDays((prevVisibleDays) => prevVisibleDays + 8);
   };
 
   const getNextNDays = (n) => {
@@ -387,13 +389,13 @@ const ServicesSection = forwardRef((props, ref) => {
       }
 
       // Resetar o estado após o agendamento bem-sucedido
-      setShowSummary(false);
+      setCurrentStep(0);
       setSelectedServices([]);
       setSelectedProfessionals({});
       setSelectedDates({});
       setSelectedTimes({});
 
-      alert("Agendamento confirmado com sucesso!");
+      toast.success(`Agendamento confirmado com sucesso!`);
     } catch (error) {
       console.error("Erro ao confirmar o agendamento:", error);
       alert(

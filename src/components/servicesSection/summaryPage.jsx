@@ -19,6 +19,8 @@ import {
   StyledInput,
   ActionButton,
 } from "./styles";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SummaryPage = ({
   selectedServices,
@@ -82,6 +84,7 @@ const SummaryPage = ({
       );
       setClientInfo(response.data);
       setStep("agendamento");
+      toast.success(`Bem-vinda, ${response.data.name}!`);
     } catch (error) {
       setError("Erro ao cadastrar cliente. Tente novamente.");
     }
@@ -131,7 +134,10 @@ const SummaryPage = ({
       </SummaryItem>
 
       <ActionButton
-        onClick={() => setStep("agendamento")}
+        onClick={() => {
+          setStep("agendamento");
+          toast.success(`Bem-vinda, ${clientInfo.name}!`);
+        }}
         primary
         style={{ width: "100%", marginBottom: "10px" }}
       >
