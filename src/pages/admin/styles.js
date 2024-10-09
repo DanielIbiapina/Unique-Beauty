@@ -1,73 +1,88 @@
 import styled from "styled-components";
 
 export const AdminContainer = styled.div`
-  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f5f7fa;
 `;
 
-export const AdminSection = styled.div`
-  margin-bottom: 20px;
+export const AdminSection = styled.section`
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
 `;
 
 export const SectionTitle = styled.h2`
-  margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
 `;
 
 export const ProfessionalGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 1.5rem;
 `;
 
 export const ProfessionalCard = styled.div`
-  position: relative;
-  background-color: #f0f0f0;
+  background-color: #fff;
   border-radius: 8px;
-  padding: 15px;
-  text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 export const ProfessionalImage = styled.img`
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
 `;
 
-export const ProfessionalName = styled.p`
-  font-weight: bold;
-  margin-bottom: 5px;
+export const ProfessionalName = styled.h3`
+  font-size: 1rem;
+  color: #333;
+  padding: 0.5rem;
+  text-align: center;
 `;
 
-export const RemoveButton = styled.button`
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background-color: transparent;
+export const Button = styled.button`
+  background-color: #3498db;
+  color: #fff;
   border: none;
-  color: #ff4136;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 18px;
-`;
-
-export const AddButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #0074d9;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 24px;
-  cursor: pointer;
-  height: 100%;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #2980b9;
   }
+`;
+
+export const RemoveButton = styled(Button)`
+  background-color: #e74c3c;
+
+  &:hover {
+    background-color: #c0392b;
+  }
+`;
+
+export const AddButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
 `;
 
 export const Modal = styled.div`
@@ -165,24 +180,24 @@ export const CancelButton = styled.button`
 export const RevenueAmount = styled.span`
   font-size: 1.2em;
   font-weight: bold;
-  color: #4caf50; // Cor verde para valores positivos
+  color: #fff; // Cor verde para valores positivos
 `;
-export const RevenueSection = styled.div`
-  margin-bottom: 30px;
+export const RevenueSection = styled(AdminSection)`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const RevenueCard = styled.div`
-  background-color: #f9f9f9;
+  background-color: #3498db;
+  color: #fff;
   border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 `;
 
 export const RevenueTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 `;
 
 export const MonthSelector = styled.div`
@@ -314,4 +329,98 @@ export const ScheduleTable = styled.table`
   tr:nth-child(even) {
     background-color: #f9f9f9;
   }
+`;
+
+export const AppointmentCalendar = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+`;
+
+export const AppointmentCard = styled.div`
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 1rem;
+`;
+
+export const AppointmentDate = styled.div`
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3498db;
+  margin-bottom: 0.5rem;
+`;
+
+export const ClientName = styled.div`
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+`;
+
+export const ServiceList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`;
+
+export const ServiceItem = styled.li`
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+`;
+
+export const ServiceName = styled.div`
+  font-weight: bold;
+  color: #2c3e50;
+`;
+
+export const ServiceTime = styled.div`
+  font-size: 0.9rem;
+  color: #7f8c8d;
+`;
+
+export const ServicePrice = styled.div`
+  font-size: 0.9rem;
+  color: #27ae60;
+  font-weight: bold;
+`;
+
+export const TotalPrice = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2980b9;
+  margin-top: 0.5rem;
+  text-align: right;
+`;
+
+export const AppointmentStatus = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: ${(props) => {
+    switch (props.status.toLowerCase()) {
+      case "confirmado":
+        return "#2ecc71";
+      case "pendente":
+        return "#f39c12";
+      case "cancelado":
+        return "#e74c3c";
+      default:
+        return "#95a5a6";
+    }
+  }};
+  color: white;
 `;

@@ -45,6 +45,17 @@ import {
   YearButton,
   ScheduleButton,
   ScheduleTable,
+  AppointmentCalendar,
+  AppointmentCard,
+  AppointmentDate,
+  ClientName,
+  ServiceList,
+  ServiceItem,
+  ServiceName,
+  ServiceTime,
+  ServicePrice,
+  TotalPrice,
+  AppointmentStatus,
 } from "./styles";
 
 function AdminPage() {
@@ -177,8 +188,18 @@ function AdminPage() {
           import.meta.env.VITE_API_URL
         }/appointments/professional/${professionalId}`
       );
-      setProfessionalAppointments(response.data);
-      console.log(response.data);
+
+      // Filtrar os serviços para incluir apenas os do profissional atual
+      const filteredAppointments = response.data
+        .map((appointment) => ({
+          ...appointment,
+          services: appointment.services.filter(
+            (service) => service.professionalId === professionalId
+          ),
+        }))
+        .filter((appointment) => appointment.services.length > 0);
+
+      setProfessionalAppointments(filteredAppointments);
     } catch (error) {
       console.error("Erro ao buscar agendamentos do profissional:", error);
     }
@@ -381,34 +402,58 @@ function AdminPage() {
             <CloseButton onClick={() => setSelectedProfessional(null)}>
               ×
             </CloseButton>
-            <h2>Agendamentos de {selectedProfessional.name}</h2>
-            <ScheduleTable>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Hora</th>
-                  <th>Cliente</th>
-                  <th>Serviço</th>
-                </tr>
-              </thead>
-              <tbody>
-                {professionalAppointments.map((appointment) => (
-                  <tr key={appointment.id}>
-                    <td>
-                      {new Date(appointment.dateTime).toLocaleDateString()}
-                    </td>
-                    <td>
-                      {new Date(appointment.dateTime).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
+            <SectionTitle>Agenda de {selectedProfessional.name}</SectionTitle>
+            <AppointmentCalendar>
+              {professionalAppointments.map((appointment) => {
+                const appointmentDate = new Date(appointment.dateTime);
+
+                return (
+                  <AppointmentCard key={appointment.id}>
+                    <AppointmentStatus status={appointment.status}>
+                      {appointment.status}
+                    </AppointmentStatus>
+                    <AppointmentDate>
+                      {appointmentDate.toLocaleDateString()}
+                    </AppointmentDate>
+                    <ClientName>{appointment.client.name}</ClientName>
+                    <ServiceList>
+                      {appointment.services.map((service, index) => {
+                        const startTime = new Date(service.dateTime);
+                        const endTime = new Date(
+                          startTime.getTime() + service.service.duration * 60000
+                        );
+
+                        return (
+                          <ServiceItem key={index}>
+                            <ServiceName>{service.service.name}</ServiceName>
+                            <ServiceTime>
+                              {startTime.toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}{" "}
+                              -
+                              {endTime.toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </ServiceTime>
+                            <ServicePrice>
+                              R$ {service.price.toFixed(2)}
+                            </ServicePrice>
+                          </ServiceItem>
+                        );
                       })}
-                    </td>
-                    <td>{appointment.client.name}</td>
-                    <td>{appointment.serviceName}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </ScheduleTable>
+                    </ServiceList>
+                    <TotalPrice>
+                      Total: R${" "}
+                      {appointment.services
+                        .reduce((total, service) => total + service.price, 0)
+                        .toFixed(2)}
+                    </TotalPrice>
+                  </AppointmentCard>
+                );
+              })}
+            </AppointmentCalendar>
           </ModalContent>
         </Modal>
       )}
