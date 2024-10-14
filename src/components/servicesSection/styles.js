@@ -135,6 +135,7 @@ export const ProfessionalItem = styled.li`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: 58.6px;
   min-height: 50px;
+  color: black;
   &:hover {
     background-color: #ffe4e1;
   }
@@ -223,6 +224,7 @@ export const SummaryItem = styled.div`
 
   p {
     margin: 8px 0;
+    color: black;
   }
 
   ul {
@@ -294,6 +296,8 @@ export const DetailedServiceItem = styled.li`
   height: 45.6px;
   min-height: 40px;
 
+  color: black;
+
   &:hover {
     background-color: #ffe4e1;
   }
@@ -327,12 +331,14 @@ export const ServiceName = styled.span`
   flex: 1;
   font-size: 0.9rem;
   font-weight: 500;
+  color: black;
 `;
 
 export const ServicePrice = styled.span`
   font-size: 0.9rem;
   font-weight: 600;
   margin-right: 1rem;
+  color: black;
 `;
 
 /*export const ServiceIcon = styled.span`
@@ -354,6 +360,7 @@ export const ShowMoreButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  color: black;
   &:hover {
     background-color: #e0e0e0;
   }
